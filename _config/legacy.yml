@@ -1,0 +1,6 @@
+---
+Name: userforms-utils-legacy
+---
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    FormWidget: Logicbrush\UserFormsUtils\Widgets\UserFormWidget

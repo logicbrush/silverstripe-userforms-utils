@@ -25,6 +25,7 @@ before_script:
 
   - composer validate
   - composer require --no-update silverstripe/recipe-cms:$RECIPE_VERSION
+  - composer require --no-update silverstripe/widgets:^2
   - if [[ $DB == PGSQL ]]; then composer require --prefer-dist --no-update silverstripe/postgresql:^2; fi
   - composer require --no-update sminnee/phpunit-mock-objects:^3
   - composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader --verbose --profile

@@ -35,8 +35,13 @@ class UserFormWidget extends Widget
     {
         $fields = FieldList::create();
         $fields->push(TextareaField::create('IntroText', 'Introductory Text'));
-        $fields->push(DropdownField::create('UserFormID', 'Select a form',
-                UserDefinedForm::get()->map('ID', 'Title'))->setEmptyString(''));
+        $fields->push(
+            DropdownField::create(
+                'UserFormID',
+                'Select a form',
+                UserDefinedForm::get()->map('ID', 'Title')
+            )->setEmptyString('')
+        );
         $fields->push(CheckboxField::create('ShowFormTitle', 'Show Form Title?'));
         $fields->push(CheckboxField::create('ShowFormContent', 'Show Form Content?'));
 

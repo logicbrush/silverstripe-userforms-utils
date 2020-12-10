@@ -28,11 +28,14 @@ class UserFormWidgetController extends WidgetController
     public function FormContent()
     {
         if ($this->UserForm()->exists() && $this->UserForm()->Content) {
-            return DBField::create_field('HTMLText', preg_replace(
+            return DBField::create_field(
+                'HTMLText',
+                preg_replace(
                     '/(<p[^>]*>)?\\$UserDefinedForm(<\\/p>)?/i',
                     '',
                     $this->UserForm()->Content
-                ));
+                )
+            );
         }
 
         return false;

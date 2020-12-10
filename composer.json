@@ -1,6 +1,6 @@
 {
     "name": "logicbrush/silverstripe-userforms-utils",
-    "description": "A spam protector and form field using hCaptcha",
+    "description": "A collection of utilities for the Silverstripe UserForms module",
     "homepage": "https://www.logicbrush.com/specialities/silverstripe-development/",
     "type": "silverstripe-vendormodule",
     "keywords": [

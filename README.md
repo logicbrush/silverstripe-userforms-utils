@@ -15,5 +15,5 @@ composer require "logicbrush/silverstripe-userforms-utils"
 
 ## Usage
 
-To use the user forms shortcode we can insert [userform id="x"] in the HTMLText area where x is the user form page ID.
+To use the user forms shortcode we can insert `[userform id="x"]` in the HTMLText area where `x` is the user form page ID.
 

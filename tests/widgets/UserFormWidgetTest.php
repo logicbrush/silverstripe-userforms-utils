@@ -130,6 +130,7 @@ class UserFormWidgetTest extends FunctionalTest
         $textField3 = new EditableTextField();
         $textField3->Name = 'text-field-3';
         $textField3->Title = 'Text field 3';
+        $textField3->Required = true;
         $textField3->write();
         $textField3->publishRecursive();
 

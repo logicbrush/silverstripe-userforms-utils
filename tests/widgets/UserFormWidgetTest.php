@@ -118,13 +118,13 @@ class UserFormWidgetTest extends FunctionalTest
         $formStep1 = new EditableFormStep();
         $formStep1->Name = 'form-step-1';
         $formStep1->Title = 'Form step 1';
-        $formStep1->Required = true;
         $formStep1->write();
         $formStep1->publishRecursive();
 
         $textField1 = new EditableTextField();
         $textField1->Name = 'text-field-1';
         $textField1->Title = 'Text field 1';
+        $textField1->Required = true;
         $textField1->write();
         $textField1->publishRecursive();
 

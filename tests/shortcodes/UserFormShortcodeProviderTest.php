@@ -46,4 +46,9 @@ class UserFormShortcodeProviderTest extends FunctionalTest
         $this->assertEquals('', $parser->parse('[userform]'));
         $this->assertEquals('', $parser->parse('[userform id=100]'));
     }
+
+    public function testGetShortcodes()
+    {
+        $this->assertEquals(['user_form'], UserFormShortcodeProvider::get_shortcodes());
+    }
 }

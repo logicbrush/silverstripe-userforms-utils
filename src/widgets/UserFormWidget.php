@@ -34,7 +34,7 @@ class UserFormWidget extends Widget
     public function getCMSFields()
     {
         $fields = FieldList::create();
-        $fields->push(TextareaField::create('IntroText', 'Introductory Text'));
+        $fields->push(TextareaField::create('IntroText', 'Introductory text'));
         $fields->push(
             DropdownField::create(
                 'UserFormID',
@@ -42,8 +42,8 @@ class UserFormWidget extends Widget
                 UserDefinedForm::get()->map('ID', 'Title')
             )->setEmptyString('')
         );
-        $fields->push(CheckboxField::create('ShowFormTitle', 'Show Form Title?'));
-        $fields->push(CheckboxField::create('ShowFormContent', 'Show Form Content?'));
+        $fields->push(CheckboxField::create('ShowFormTitle', 'Show form title?'));
+        $fields->push(CheckboxField::create('ShowFormContent', 'Show form content?'));
 
         return $fields;
     }

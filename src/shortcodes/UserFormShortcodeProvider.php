@@ -90,8 +90,6 @@ class UserFormShortcodeProvider implements ShortcodeHandler
             Requirements::add_i18n_javascript('silverstripe/userforms:client/lang');
             Requirements::javascript('silverstripe/userforms:client/dist/js/userforms.js');
 
-            $module = ModuleLoader::getModule('silverstripe/userforms');
-
             self::addUserFormsValidatei18n();
 
             // Bind a confirmation message when navigating away from a partially completed form.

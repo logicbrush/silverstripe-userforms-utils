@@ -2,7 +2,7 @@
 
 namespace Logicbrush\UserFormsUtils\Shortcodes;
 
-use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Manifest\ModuleLoader;
 use SilverStripe\i18n\i18n;
 use SilverStripe\UserForms\Control\UserDefinedFormController;
@@ -17,6 +17,7 @@ use SilverStripe\View\Requirements;
  */
 class UserFormShortcodeProvider implements ShortcodeHandler
 {
+    use Configurable;
 
     /**
      * Set this to true to disable automatic inclusion of UserForms CSS and Javascript files
@@ -73,7 +74,7 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 
     protected static function loadUserFormsRequirements()
     {
-        if (Config::inst()->get(self::class, 'block_default_userforms_requirements')) {
+        if (self::config()->get('block_default_userforms_requirements')) {
             return;
         }
 

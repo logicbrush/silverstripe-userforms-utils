@@ -29,7 +29,7 @@ class UserFormShortcodeProvider implements ShortcodeHandler
     /**
      * Gets the list of shortcodes provided by this handler
      *
-     * @return mixed
+     * @return string[]
      */
     public static function get_shortcodes()
     {

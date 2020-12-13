@@ -2,7 +2,6 @@
 
 namespace Logicbrush\UserFormsUtils\Widgets;
 
-use Logicbrush\UserFormsUtils\Controllers\UserFormWidgetController;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
@@ -46,10 +45,5 @@ class UserFormWidget extends Widget
         $fields->push(CheckboxField::create('ShowFormContent', 'Show form content?'));
 
         return $fields;
-    }
-
-    public function getControllerName()
-    {
-        return UserFormWidgetController::class;
     }
 }

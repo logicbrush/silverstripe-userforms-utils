@@ -2,8 +2,8 @@
 
 namespace Logicbrush\UserFormsUtils\Tests\Widgets;
 
-use Logicbrush\UserFormsUtils\Controllers\UserFormWidgetController;
 use Logicbrush\UserFormsUtils\Widgets\UserFormWidget;
+use Logicbrush\UserFormsUtils\Widgets\UserFormWidgetController;
 use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\Forms\Form;
 use SilverStripe\UserForms\Model\EditableFormField\EditableFormStep;
@@ -170,11 +170,5 @@ class UserFormWidgetTest extends FunctionalTest
         $fields = $userFormWidget->getCMSFields();
 
         $this->assertNotNull($fields);
-    }
-
-    public function testGetControllerName()
-    {
-        $userFormWidget = new UserFormWidget();
-        $this->assertEquals(UserFormWidgetController::class, $userFormWidget->getControllerName());
     }
 }

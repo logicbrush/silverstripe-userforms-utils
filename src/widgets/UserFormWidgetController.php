@@ -1,6 +1,6 @@
 <?php
 
-namespace Logicbrush\UserFormsUtils\Controllers;
+namespace Logicbrush\UserFormsUtils\Widgets;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\FieldList;

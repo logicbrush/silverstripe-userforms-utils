@@ -70,8 +70,13 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 
         $formEscapedForRegex = addcslashes($form->forTemplate(), '\\$');
 
-        $form->setSessionData($data);
-        $form->setSessionValidationResult($validationResult);
+        if (is_array($data)) {
+            $form->setSessionData($data);
+        }
+
+        if (isset($validationResult)) {
+            $form->setSessionValidationResult($validationResult);
+        }
 
         self::loadUserFormsRequirements();
 

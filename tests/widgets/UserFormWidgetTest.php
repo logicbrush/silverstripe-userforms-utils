@@ -4,6 +4,7 @@ namespace Logicbrush\UserFormsUtils\Tests\Widgets;
 
 use Logicbrush\UserFormsUtils\Widgets\UserFormWidget;
 use Logicbrush\UserFormsUtils\Widgets\UserFormWidgetController;
+use SilverStripe\Control\Session;
 use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\Forms\Form;
 use SilverStripe\UserForms\Model\EditableFormField\EditableFormStep;
@@ -96,6 +97,7 @@ class UserFormWidgetTest extends FunctionalTest
         $userFormWidget->write();
 
         $userFormWidgetController = new UserFormWidgetController($userFormWidget);
+        $userFormWidgetController->getRequest()->setSession(new Session([]));
 
         $this->assertNull($userFormWidgetController->UserDefinedForm());
 
@@ -136,6 +138,9 @@ class UserFormWidgetTest extends FunctionalTest
         $userFormWidget->write();
 
         $userFormWidgetController = new UserFormWidgetController($userFormWidget);
+        $userFormWidgetController->getRequest()->setSession(new Session([
+            "FormInfo.UserForm_Form_{$userDefinedForm->ID}.data" => [],
+        ]));
         $form = $userFormWidgetController->UserDefinedForm();
 
         $fields = $form->Fields();

@@ -65,7 +65,18 @@ class UserFormShortcodeProvider implements ShortcodeHandler
         $userDefinedFormController = UserDefinedFormController::create($userDefinedForm);
 
         $form = $userDefinedFormController->Form();
+        $data = $form->getSessionData();
+        $validationResult = $form->getSessionValidationResult();
+
         $formEscapedForRegex = addcslashes($form->forTemplate(), '\\$');
+
+        if (is_array($data)) {
+            $form->setSessionData($data);
+        }
+
+        if (isset($validationResult)) {
+            $form->setSessionValidationResult($validationResult);
+        }
 
         self::loadUserFormsRequirements();
 

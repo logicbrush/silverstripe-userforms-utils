@@ -94,7 +94,7 @@ class UserFormShortcodeProvider implements ShortcodeHandler
         }
 
         if (!UserDefinedForm::config()->get('block_default_userforms_js')) {
-            Requirements::javascript('//code.jquery.com/jquery-3.4.1.min.js');
+            //Requirements::javascript('//code.jquery.com/jquery-3.4.1.min.js');
             Requirements::javascript(
                 'silverstripe/userforms:client/thirdparty/jquery-validate/jquery.validate.min.js'
             );

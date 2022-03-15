@@ -94,7 +94,7 @@ class UserFormShortcodeProvider implements ShortcodeHandler
         if (!UserDefinedForm::config()->get('block_default_userforms_js')) {
             //Requirements::javascript('//code.jquery.com/jquery-3.4.1.min.js');
             Requirements::javascript(
-                'silverstripe/userforms:client/thirdparty/jquery-validate/jquery.validate.min.js'
+                'silverstripe/userforms:client/dist/js/jquery-validation/jquery.validate.min.js'
             );
             Requirements::javascript('silverstripe/admin:client/dist/js/i18n.js');
             Requirements::add_i18n_javascript('silverstripe/userforms:client/lang');
@@ -105,7 +105,7 @@ class UserFormShortcodeProvider implements ShortcodeHandler
             // Bind a confirmation message when navigating away from a partially completed form.
             if (UserDefinedForm::config()->get('enable_are_you_sure')) {
                 Requirements::javascript(
-                    'silverstripe/userforms:client/thirdparty/jquery.are-you-sure/jquery.are-you-sure.js'
+                    'silverstripe/userforms:client/dist/js/jquery.are-you-sure/jquery.are-you-sure.js'
                 );
             }
         }

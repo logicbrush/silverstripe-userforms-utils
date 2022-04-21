@@ -20,7 +20,7 @@
     "require": {
         "php": ">=7.1.0",
         "silverstripe/framework": "^4.0",
-        "silverstripe/userforms": "^5.0"
+        "silverstripe/userforms": "^5.10"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7",
@@ -42,5 +42,11 @@
         "lint-clean": "vendor/bin/phpcbf src/ tests/"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/vendor-plugin": true
+        }
+    }
 }

@@ -5,8 +5,9 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/logicbrush/silverstripe-userforms-utils/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/logicbrush/silverstripe-userforms-utils/?branch=master)
 [![License](https://poser.pugx.org/logicbrush/silverstripe-userforms-utils/license)](LICENSE)
 
-A collection of utilities for the Silverstripe CMS UserForms module. This includes a shortcode to insert a user
-form into any content area and a user form widget.
+A collection of utilities for the Silverstripe CMS UserForms module. This
+includes a shortcode to insert a user form into any content area and a user form
+widget.
 
 ## Requirements
 

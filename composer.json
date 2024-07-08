@@ -1,6 +1,6 @@
 {
     "name": "logicbrush/silverstripe-userforms-utils",
-    "description": "A collection of utilities for the Silverstripe UserForms module",
+    "description": "A collection of enhancements and utilities for the Silverstripe UserForms module",
     "homepage": "https://www.logicbrush.com/specialities/silverstripe-development/",
     "type": "silverstripe-vendormodule",
     "keywords": [
@@ -26,9 +26,11 @@
         "phpunit/phpunit": "^5.7",
         "squizlabs/php_codesniffer": "*"
     },
-    "extra": {
-        "installer-name": "silverstripe-userforms-utils"
-    },
+	"extra": {
+		"expose": [
+			"client"
+		]
+	},
     "autoload": {
         "psr-4": {
             "logicbrush\\silverstripe-userforms-utils\\": "src/"

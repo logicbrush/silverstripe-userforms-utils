@@ -24,8 +24,9 @@ composer require "logicbrush/silverstripe-userforms-utils"
 
 To use the form shortcode we insert `[userform id="x"]` in a HTMLText area where `x` is the user form page ID.
 
-By default the UserForms module CSS and Javascript requirements will be loaded when using the shortcode. This can
-be turned off by setting the following in a `yml` config file:
+By default the UserForms module CSS and Javascript requirements will be loaded
+when using the shortcode. This can be turned off by setting the following in a
+`yml` config file:
 
 ```yml
 Logicbrush\UserFormsUtils\Shortcodes\UserFormShortcodeProvider:

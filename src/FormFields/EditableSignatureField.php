@@ -2,9 +2,11 @@
 
 namespace Logicbrush\UserFormsUtils\FormFields;
 
+use Logicbrush\UserFormsUtils\FormFields\Submission\ImageSubmittedFormField;
 use SilverStripe\Forms\HiddenField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\UserForms\Model\EditableFormField;
+use SilverStripe\UserForms\Model\Submission\SubmittedFormField;
 
 class EditableSignatureField extends EditableFormField {
 
@@ -19,6 +21,15 @@ class EditableSignatureField extends EditableFormField {
             ;
         $this->doUpdateFormField($field);
         return $field;
+    }
+
+    /**
+     * Returns an image field, so the signature can be viewed in the CMS and in
+     * reports.
+     */
+    public function getSubmittedFormField() : SubmittedFormField
+    {
+        return ImageSubmittedFormField::create();
     }
 
 

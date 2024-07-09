@@ -115,9 +115,10 @@ class EditableUSStateDropdownField extends EditableFormField {
 
     public function getFormField() {
         $field = DropdownField::create($this->Name, $this->Title ?: false)
-            ->setSource(self::$list_of_states)
             ->setFieldHolderTemplate(EditableFormField::class . '_holder')
-            ->setTemplate(EditableDropdown::class);
+            ->setTemplate(EditableDropdown::class)
+            ->setSource(self::$list_of_states)
+            ;
 
         // Empty string
         if ($this->UseEmptyString) {

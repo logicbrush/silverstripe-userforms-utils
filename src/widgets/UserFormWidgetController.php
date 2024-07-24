@@ -69,16 +69,19 @@ class UserFormWidgetController extends WidgetController
         $form = Form::create($this, UserDefinedForm::class, $fields, $actions, $required);
         $form->setFormAction($this->UserForm()->Link('Form') . '?BackURL=' . urlencode($this->UserForm()->Link() . '#Form_Form'));
 
-        // Load form data.
         $data = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.data");
         if (is_array($data)) {
-            $form->loadDataFrom($data);
-        }
 
-        // Load form validation results.
-        $result = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.result");
-        if (isset($result)) {
-            $form->loadMessagesFrom(unserialize($result));
+            // Load form data.
+            $form->loadDataFrom($data);
+
+            $result = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.result");
+            if (isset($result)) {
+
+                // Load form validation results.
+                $form->loadMessagesFrom(unserialize($result));
+
+            }
         }
 
         return $form;

@@ -10,6 +10,7 @@ use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\UserForms\Form\UserForm;
 use SilverStripe\UserForms\Model\EditableFormField;
 use SilverStripe\UserForms\Model\EditableFormField\EditableFormStep;
 use SilverStripe\UserForms\Model\UserDefinedForm;
@@ -69,9 +70,18 @@ class UserFormWidgetController extends WidgetController
         $form->setFormAction($this->UserForm()->Link('Form') . '?BackURL=' . urlencode($this->UserForm()->Link() . '#Form_Form'));
 
         $data = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.data");
-
         if (is_array($data)) {
+
+            // Load form data.
             $form->loadDataFrom($data);
+
+            $result = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.result");
+            if (isset($result)) {
+
+                // Load form validation results.
+                $form->loadMessagesFrom(unserialize($result));
+
+            }
         }
 
         return $form;

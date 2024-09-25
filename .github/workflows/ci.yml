@@ -28,7 +28,7 @@ jobs:
         with:
           command: update
             --with silverstripe/framework:^${{ matrix.silverstripe-version }}
-            --with silverstripe/widget
+            --with silverstripe/widget:*
           php_version: ${{ matrix.php-version }}
           php_extensions: intl
       - run: |

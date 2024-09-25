@@ -36,8 +36,8 @@ class UserFormShortcodeProviderTest extends FunctionalTest
 
         $result = $parser->parse('[userform id=' . $userDefinedForm->ID . ']');
 
-        $this->assertContains('<form', $result);
-        $this->assertContains('<input type="text" name="text-field"', $result);
+        $this->assertStringContainsString('<form', $result);
+        $this->assertStringContainsString('<input type="text" name="text-field"', $result);
     }
 
     public function testFailure()

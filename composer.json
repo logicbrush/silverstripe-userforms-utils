@@ -23,8 +23,10 @@
         "silverstripe/userforms": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7",
-        "squizlabs/php_codesniffer": "*"
+		"phpunit/phpunit": "^9.5",
+		"silverstripe/sqlite3": "*",
+		"logicbrush/metrics": "*",
+		"cmrcx/phptidy": "*"
     },
 	"extra": {
 		"expose": [

@@ -76,7 +76,7 @@ class UserFormWidgetTest extends FunctionalTest
 
         $formContent = $userFormWidgetController->FormContent()->getValue();
 
-        $this->assertContains('<p>User Defined Form</p>', $formContent);
+        $this->assertStringContainsString('<p>User Defined Form</p>', $formContent);
     }
 
     public function testUserDefinedForm()

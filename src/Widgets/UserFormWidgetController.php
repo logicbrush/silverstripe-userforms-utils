@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Widgets/UserFormWidgetController.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\UserFormsUtils\Widgets;
 
@@ -17,111 +23,138 @@ use SilverStripe\UserForms\Model\UserDefinedForm;
 use SilverStripe\Widgets\Model\WidgetController;
 
 if (!class_exists(WidgetController::class)) {
-    return;
+	return;
 }
+
 
 class UserFormWidgetController extends WidgetController
 {
-    public function Showing()
-    {
-        return ($userDefinedForm = $this->UserForm()) && $userDefinedForm->ID != Controller::curr()->ID;
-    }
 
-    public function FormContent()
-    {
-        if ($this->UserForm()->exists() && $this->UserForm()->Content) {
-            return DBField::create_field(
-                'HTMLText',
-                preg_replace(
-                    '/(<p[^>]*>)?\\$UserDefinedForm(<\\/p>)?/i',
-                    '',
-                    $this->UserForm()->Content
-                )
-            );
-        }
+	/**
+	 *
+	 * @return unknown
+	 */
+	public function Showing() {
+		return ($userDefinedForm = $this->UserForm()) && $userDefinedForm->ID != Controller::curr()->ID;
+	}
 
-        return false;
-    }
 
-    public function UserDefinedForm()
-    {
-        $userDefinedForm = $this->UserForm();
+	/**
+	 *
+	 * @return unknown
+	 */
+	public function FormContent() {
+		if ($this->UserForm()->exists() && $this->UserForm()->Content) {
+			return DBField::create_field(
+				'HTMLText',
+				preg_replace(
+					'/(<p[^>]*>)?\\$UserDefinedForm(<\\/p>)?/i',
+					'',
+					$this->UserForm()->Content
+				)
+			);
+		}
 
-        if (!$userDefinedForm || !$userDefinedForm->exists()) {
-            return null;
-        }
+		return false;
+	}
 
-        $fields = FieldList::create();
-        $required = RequiredFields::create();
 
-        $userDefinedFormFields = EditableFormField::get()->filter(['ParentID' => $userDefinedForm->ID]);
+	/**
+	 *
+	 * @return unknown
+	 */
+	public function UserDefinedForm() {
+		$userDefinedForm = $this->UserForm();
 
-        $this->setupFields($userDefinedFormFields, $fields, $required);
+		if (!$userDefinedForm || !$userDefinedForm->exists()) {
+			return null;
+		}
 
-        $actions = FieldList::create();
-        $actions->push(
-            FormAction::create(
-                'process',
-                ($userDefinedForm->SubmitButtonText) ? $userDefinedForm->SubmitButtonText : _t('UserDefinedForm.SUBMITBUTTON', 'Submit')
-            )
-        );
+		$fields = FieldList::create();
+		$required = RequiredFields::create();
 
-        $form = Form::create($this, UserDefinedForm::class, $fields, $actions, $required);
-        $form->setFormAction($this->UserForm()->Link('Form') . '?BackURL=' . urlencode($this->UserForm()->Link() . '#Form_Form'));
+		$userDefinedFormFields = EditableFormField::get()->filter(['ParentID' => $userDefinedForm->ID]);
 
-        $data = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.data");
-        if (is_array($data)) {
+		$this->setupFields($userDefinedFormFields, $fields, $required);
 
-            // Load form data.
-            $form->loadDataFrom($data);
+		$actions = FieldList::create();
+		$actions->push(
+			FormAction::create(
+				'process',
+				($userDefinedForm->SubmitButtonText) ? $userDefinedForm->SubmitButtonText : _t('UserDefinedForm.SUBMITBUTTON', 'Submit')
+			)
+		);
 
-            $result = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.result");
-            if (isset($result)) {
+		$form = Form::create($this, UserDefinedForm::class, $fields, $actions, $required);
+		$form->setFormAction($this->UserForm()->Link('Form') . '?BackURL=' . urlencode($this->UserForm()->Link() . '#Form_Form'));
 
-                // Load form validation results.
-                $form->loadMessagesFrom(unserialize($result));
+		$data = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.data");
+		if (is_array($data)) {
 
-            }
-        }
+			// Load form data.
+			$form->loadDataFrom($data);
 
-        return $form;
-    }
+			$result = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.result");
+			if (isset($result)) {
 
-    private function setupFields(DataList $userDefinedFormFields, FieldList $fields, RequiredFields $required)
-    {
-        $formStepsCount = $userDefinedFormFields->filter(['ClassName' => EditableFormStep::class])->Count();
+				// Load form validation results.
+				$form->loadMessagesFrom(unserialize($result));
 
-        foreach ($userDefinedFormFields as $field) {
-            if ($field instanceof EditableFormStep) {
-                $this->processFormStepFields($field, $fields, $formStepsCount);
+			}
+		}
 
-                continue;
-            }
+		return $form;
+	}
 
-            $fields->push($formField = $field->getFormField());
 
-            if ($field->Required) {
-                $required->addRequiredField($formField->Name);
-                $formField->addExtraClass('requiredField');
-            }
-        }
-    }
+	/**
+	 *
+	 * @param DataList       $userDefinedFormFields
+	 * @param FieldList      $fields
+	 * @param RequiredFields $required
+	 */
+	private function setupFields(DataList $userDefinedFormFields, FieldList $fields, RequiredFields $required) {
+		$formStepsCount = $userDefinedFormFields->filter(['ClassName' => EditableFormStep::class])->Count();
 
-    private function processFormStepFields(EditableFormStep $field, FieldList $fields, int $formStepsCount)
-    {
-        if ($formStepsCount < 2) {
-            return;
-        }
+		foreach ($userDefinedFormFields as $field) {
+			if ($field instanceof EditableFormStep) {
+				$this->processFormStepFields($field, $fields, $formStepsCount);
 
-        $stepField = $field->getFormField();
+				continue;
+			}
 
-        if ($stepField->title) {
-            $headerField = HeaderField::create(
-                $stepField->name,
-                $stepField->title,
-                3
-            );
-            $fields->push($headerField);
-        }
-    }
+			$fields->push($formField = $field->getFormField());
+
+			if ($field->Required) {
+				$required->addRequiredField($formField->Name);
+				$formField->addExtraClass('requiredField');
+			}
+		}
+	}
+
+
+	/**
+	 *
+	 * @param EditableFormStep $field
+	 * @param FieldList        $fields
+	 * @param int              $formStepsCount
+	 */
+	private function processFormStepFields(EditableFormStep $field, FieldList $fields, int $formStepsCount) {
+		if ($formStepsCount < 2) {
+			return;
+		}
+
+		$stepField = $field->getFormField();
+
+		if ($stepField->title) {
+			$headerField = HeaderField::create(
+				$stepField->name,
+				$stepField->title,
+				3
+			);
+			$fields->push($headerField);
+		}
+	}
+
+
 }

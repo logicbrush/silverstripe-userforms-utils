@@ -1,4 +1,10 @@
 <?php
+/**
+ * src/Shortcodes/UserFormShortcodeProvider.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\UserFormsUtils\Shortcodes;
 
@@ -17,120 +23,128 @@ use SilverStripe\View\Requirements;
  */
 class UserFormShortcodeProvider implements ShortcodeHandler
 {
-    use Configurable;
+	use Configurable;
 
-    /**
-     * Set this to true to disable automatic inclusion of UserForms CSS and Javascript files
-     * @config
-     * @var bool
-     */
-    private static $block_default_userforms_requirements = false;
+	/**
+	 * Set this to true to disable automatic inclusion of UserForms CSS and Javascript files
+	 *
+	 * @config
+	 * @var bool
+	 */
+	private static $block_default_userforms_requirements = false;
 
-    /**
-     * Gets the list of shortcodes provided by this handler
-     *
-     * @return string[]
-     */
-    public static function get_shortcodes()
-    {
-        return [
-            'user_form',
-        ];
-    }
+	/**
+	 * Gets the list of shortcodes provided by this handler
+	 *
+	 * @return string[]
+	 */
+	public static function get_shortcodes() {
+		return [
+			'user_form',
+		];
+	}
 
-    /**
-     * Replace "[user_form id=n]" shortcode with a user form.
-     *
-     * @param array $args Arguments passed to the parser
-     * @param string $content Raw shortcode
-     * @param ShortcodeParser $parser Parser
-     * @param string $shortcode Name of shortcode used to register this handler
-     * @param array $extra Extra arguments
-     * @return string Result of the handled shortcode
-     */
-    public static function handle_shortcode($args, $content, $parser, $shortcode, $extra = [])
-    {
-        if (!isset($args['id']) || !$args['id']) {
-            return '';
-        }
 
-        $formID = $args['id'];
+	/**
+	 * Replace "[user_form id=n]" shortcode with a user form.
+	 *
+	 * @param array           $args      Arguments passed to the parser
+	 * @param string          $content   Raw shortcode
+	 * @param ShortcodeParser $parser    Parser
+	 * @param string          $shortcode Name of shortcode used to register this handler
+	 * @param array           $extra     (optional) Extra arguments
+	 * @return string Result of the handled shortcode
+	 */
+	public static function handle_shortcode($args, $content, $parser, $shortcode, $extra = []) {
+		if (!isset($args['id']) || !$args['id']) {
+			return '';
+		}
 
-        $userDefinedForm = UserDefinedForm::get()->byID($formID);
+		$formID = $args['id'];
 
-        if (!$userDefinedForm) {
-            return '';
-        }
+		$userDefinedForm = UserDefinedForm::get()->byID($formID);
 
-        $userDefinedFormController = UserDefinedFormController::create($userDefinedForm);
+		if (!$userDefinedForm) {
+			return '';
+		}
 
-        $form = $userDefinedFormController->Form();
-        $data = $form->getSessionData();
-        $validationResult = $form->getSessionValidationResult();
+		$userDefinedFormController = UserDefinedFormController::create($userDefinedForm);
 
-        if (is_array($data)) {
-            $form->setSessionData($data);
-        }
+		$form = $userDefinedFormController->Form();
+		$data = $form->getSessionData();
+		$validationResult = $form->getSessionValidationResult();
 
-        if (isset($validationResult)) {
-            $form->setSessionValidationResult($validationResult);
-        }
+		if (is_array($data)) {
+			$form->setSessionData($data);
+		}
 
-        self::loadUserFormsRequirements();
+		if (isset($validationResult)) {
+			$form->setSessionValidationResult($validationResult);
+		}
 
-        return $form->forTemplate();
-    }
+		self::loadUserFormsRequirements();
 
-    protected static function loadUserFormsRequirements()
-    {
-        if (self::config()->get('block_default_userforms_requirements')) {
-            return;
-        }
+		return $form->forTemplate();
+	}
 
-        if (!UserDefinedForm::config()->get('block_default_userforms_css')) {
-            Requirements::css('silverstripe/userforms:client/dist/styles/userforms.css');
-        }
 
-        if (!UserDefinedForm::config()->get('block_default_userforms_js')) {
-            //Requirements::javascript('//code.jquery.com/jquery-3.4.1.min.js');
-            Requirements::javascript(
-                'silverstripe/userforms:client/dist/js/jquery-validation/jquery.validate.min.js'
-            );
-            Requirements::javascript('silverstripe/admin:client/dist/js/i18n.js');
-            Requirements::add_i18n_javascript('silverstripe/userforms:client/lang');
-            Requirements::javascript('silverstripe/userforms:client/dist/js/userforms.js');
+	/**
+	 *
+	 */
+	protected static function loadUserFormsRequirements() {
+		if (self::config()->get('block_default_userforms_requirements')) {
+			return;
+		}
 
-            self::addUserFormsValidatei18n();
+		if (!UserDefinedForm::config()->get('block_default_userforms_css')) {
+			Requirements::css('silverstripe/userforms:client/dist/styles/userforms.css');
+		}
 
-            // Bind a confirmation message when navigating away from a partially completed form.
-            if (UserDefinedForm::config()->get('enable_are_you_sure')) {
-                Requirements::javascript(
-                    'silverstripe/userforms:client/dist/js/jquery.are-you-sure/jquery.are-you-sure.js'
-                );
-            }
-        }
-    }
+		if (!UserDefinedForm::config()->get('block_default_userforms_js')) {
+			//Requirements::javascript('//code.jquery.com/jquery-3.4.1.min.js');
+			Requirements::javascript(
+				'silverstripe/userforms:client/dist/js/jquery-validation/jquery.validate.min.js'
+			);
+			Requirements::javascript('silverstripe/admin:client/dist/js/i18n.js');
+			Requirements::add_i18n_javascript('silverstripe/userforms:client/lang');
+			Requirements::javascript('silverstripe/userforms:client/dist/js/userforms.js');
 
-    protected static function addUserFormsValidatei18n()
-    {
-        $module = ModuleLoader::getModule('silverstripe/userforms');
+			self::addUserFormsValidatei18n();
 
-        $candidates = [
-            i18n::getData()->langFromLocale(i18n::config()->get('default_locale')),
-            i18n::config()->get('default_locale'),
-            i18n::getData()->langFromLocale(i18n::get_locale()),
-            i18n::get_locale(),
-        ];
+			// Bind a confirmation message when navigating away from a partially completed form.
+			if (UserDefinedForm::config()->get('enable_are_you_sure')) {
+				Requirements::javascript(
+					'silverstripe/userforms:client/dist/js/jquery.are-you-sure/jquery.are-you-sure.js'
+				);
+			}
+		}
+	}
 
-        foreach ($candidates as $candidate) {
-            foreach (['messages', 'methods'] as $candidateType) {
-                $localisationCandidate = "client/thirdparty/jquery-validate/localization/{$candidateType}_{$candidate}.min.js";
 
-                $resource = $module->getResource($localisationCandidate);
-                if ($resource->exists()) {
-                    Requirements::javascript($resource->getRelativePath());
-                }
-            }
-        }
-    }
+	/**
+	 *
+	 */
+	protected static function addUserFormsValidatei18n() {
+		$module = ModuleLoader::getModule('silverstripe/userforms');
+
+		$candidates = [
+			i18n::getData()->langFromLocale(i18n::config()->get('default_locale')),
+			i18n::config()->get('default_locale'),
+			i18n::getData()->langFromLocale(i18n::get_locale()),
+			i18n::get_locale(),
+		];
+
+		foreach ($candidates as $candidate) {
+			foreach (['messages', 'methods'] as $candidateType) {
+				$localisationCandidate = "client/thirdparty/jquery-validate/localization/{$candidateType}_{$candidate}.min.js";
+
+				$resource = $module->getResource($localisationCandidate);
+				if ($resource->exists()) {
+					Requirements::javascript($resource->getRelativePath());
+				}
+			}
+		}
+	}
+
+
 }

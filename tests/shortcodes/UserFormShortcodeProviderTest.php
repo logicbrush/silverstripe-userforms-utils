@@ -1,4 +1,10 @@
 <?php
+/**
+ * tests/shortcodes/UserFormShortcodeProviderTest.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\UserFormsUtils\Tests\Shortcodes;
 
@@ -12,84 +18,97 @@ use SilverStripe\View\Requirements;
 
 class UserFormShortcodeProviderTest extends FunctionalTest
 {
-    protected $usesDatabase = true;
+	protected $usesDatabase = true;
 
-    public function testSuccess()
-    {
-        $userDefinedForm = new UserDefinedForm();
-        $userDefinedForm->Title = 'User Defined Form';
-        $userDefinedForm->write();
-        $userDefinedForm->publishRecursive();
+	/**
+	 *
+	 */
+	public function testSuccess() {
+		$userDefinedForm = new UserDefinedForm();
+		$userDefinedForm->Title = 'User Defined Form';
+		$userDefinedForm->write();
+		$userDefinedForm->publishRecursive();
 
-        $textField = new EditableTextField();
-        $textField->Name = 'text-field';
-        $textField->Title = 'Text field';
-        $textField->write();
-        $textField->publishRecursive();
+		$textField = new EditableTextField();
+		$textField->Name = 'text-field';
+		$textField->Title = 'Text field';
+		$textField->write();
+		$textField->publishRecursive();
 
-        $userDefinedForm->Fields()->add($textField);
+		$userDefinedForm->Fields()->add($textField);
 
-        $this->assertNotNull($userDefinedForm);
+		$this->assertNotNull($userDefinedForm);
 
-        $parser = new ShortcodeParser();
-        $parser->register('userform', [UserFormShortcodeProvider::class, 'handle_shortcode']);
+		$parser = new ShortcodeParser();
+		$parser->register('userform', [UserFormShortcodeProvider::class, 'handle_shortcode']);
 
-        $result = $parser->parse('[userform id=' . $userDefinedForm->ID . ']');
+		$result = $parser->parse('[userform id=' . $userDefinedForm->ID . ']');
 
-        $this->assertStringContainsString('<form', $result);
-        $this->assertStringContainsString('<input type="text" name="text-field"', $result);
-    }
+		$this->assertStringContainsString('<form', $result);
+		$this->assertStringContainsString('<input type="text" name="text-field"', $result);
+	}
 
-    public function testFailure()
-    {
-        $parser = new ShortcodeParser();
-        $parser->register('userform', [UserFormShortcodeProvider::class, 'handle_shortcode']);
 
-        $this->assertEquals('', $parser->parse('[userform]'));
-        $this->assertEquals('', $parser->parse('[userform id=100]'));
-    }
+	/**
+	 *
+	 */
+	public function testFailure() {
+		$parser = new ShortcodeParser();
+		$parser->register('userform', [UserFormShortcodeProvider::class, 'handle_shortcode']);
 
-    public function testGetShortcodes()
-    {
-        $this->assertEquals(['user_form'], UserFormShortcodeProvider::get_shortcodes());
-    }
+		$this->assertEquals('', $parser->parse('[userform]'));
+		$this->assertEquals('', $parser->parse('[userform id=100]'));
+	}
 
-    public function testRequirements()
-    {
-        UserFormShortcodeProvider::config()->set('block_default_userforms_requirements', false);
 
-        $userDefinedForm = new UserDefinedForm();
-        $userDefinedForm->write();
-        $userDefinedForm->publishRecursive();
+	/**
+	 *
+	 */
+	public function testGetShortcodes() {
+		$this->assertEquals(['user_form'], UserFormShortcodeProvider::get_shortcodes());
+	}
 
-        $parser = new ShortcodeParser();
-        $parser->register('userform', [UserFormShortcodeProvider::class, 'handle_shortcode']);
-        $parser->parse('[userform id=' . $userDefinedForm->ID . ']');
 
-        $requirements = Requirements::backend();
+	/**
+	 *
+	 */
+	public function testRequirements() {
+		UserFormShortcodeProvider::config()->set('block_default_userforms_requirements', false);
 
-        $enJavascriptCount = count($requirements->getJavascript());
+		$userDefinedForm = new UserDefinedForm();
+		$userDefinedForm->write();
+		$userDefinedForm->publishRecursive();
 
-        $this->assertTrue($enJavascriptCount > 0);
-        $this->assertTrue(count($requirements->getCSS()) > 0);
+		$parser = new ShortcodeParser();
+		$parser->register('userform', [UserFormShortcodeProvider::class, 'handle_shortcode']);
+		$parser->parse('[userform id=' . $userDefinedForm->ID . ']');
 
-        Requirements::clear();
-        UserFormShortcodeProvider::config()->set('block_default_userforms_requirements', true);
+		$requirements = Requirements::backend();
 
-        $parser->parse('[userform id=' . $userDefinedForm->ID . ']');
+		$enJavascriptCount = count($requirements->getJavascript());
 
-        $this->assertTrue(count($requirements->getJavascript()) === 0);
-        $this->assertTrue(count($requirements->getCSS()) === 0);
+		$this->assertTrue($enJavascriptCount > 0);
+		$this->assertTrue(count($requirements->getCSS()) > 0);
 
-        Requirements::clear();
-        UserFormShortcodeProvider::config()->set('block_default_userforms_requirements', false);
-        i18n::config()->set('default_locale', 'de');
+		Requirements::clear();
+		UserFormShortcodeProvider::config()->set('block_default_userforms_requirements', true);
 
-        $parser->parse('[userform id=' . $userDefinedForm->ID . ']');
+		$parser->parse('[userform id=' . $userDefinedForm->ID . ']');
 
-        $deJavascriptCount = count($requirements->getJavascript());
+		$this->assertTrue(count($requirements->getJavascript()) === 0);
+		$this->assertTrue(count($requirements->getCSS()) === 0);
 
-        $this->assertTrue($deJavascriptCount > 0);
-        // $this->assertTrue($deJavascriptCount > $enJavascriptCount);
-    }
+		Requirements::clear();
+		UserFormShortcodeProvider::config()->set('block_default_userforms_requirements', false);
+		i18n::config()->set('default_locale', 'de');
+
+		$parser->parse('[userform id=' . $userDefinedForm->ID . ']');
+
+		$deJavascriptCount = count($requirements->getJavascript());
+
+		$this->assertTrue($deJavascriptCount > 0);
+		// $this->assertTrue($deJavascriptCount > $enJavascriptCount);
+	}
+
+
 }

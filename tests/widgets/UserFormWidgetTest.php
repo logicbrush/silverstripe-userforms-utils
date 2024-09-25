@@ -1,4 +1,10 @@
 <?php
+/**
+ * tests/widgets/UserFormWidgetTest.php
+ *
+ * @package default
+ */
+
 
 namespace Logicbrush\UserFormsUtils\Tests\Widgets;
 
@@ -13,167 +19,186 @@ use SilverStripe\UserForms\Model\UserDefinedForm;
 
 class UserFormWidgetTest extends FunctionalTest
 {
-    protected $usesDatabase = true;
+	protected $usesDatabase = true;
 
-    public function testCreateUserFormWidget()
-    {
-        $userFormWidget = new UserFormWidget();
-        $userFormWidget->write();
+	/**
+	 *
+	 */
+	public function testCreateUserFormWidget() {
+		$userFormWidget = new UserFormWidget();
+		$userFormWidget->write();
 
-        $this->assertNotNull($userFormWidget);
-    }
+		$this->assertNotNull($userFormWidget);
+	}
 
-    public function testShowing()
-    {
-        $userDefinedForm = new UserDefinedForm();
-        $userDefinedForm->Title = 'User Defined Form';
-        $userDefinedForm->write();
-        $userDefinedForm->publishRecursive();
 
-        $userFormWidget = new UserFormWidget();
-        $userFormWidget->write();
+	/**
+	 *
+	 */
+	public function testShowing() {
+		$userDefinedForm = new UserDefinedForm();
+		$userDefinedForm->Title = 'User Defined Form';
+		$userDefinedForm->write();
+		$userDefinedForm->publishRecursive();
 
-        $userFormWidgetController = new UserFormWidgetController($userFormWidget);
+		$userFormWidget = new UserFormWidget();
+		$userFormWidget->write();
 
-        $this->assertFalse($userFormWidgetController->Showing());
+		$userFormWidgetController = new UserFormWidgetController($userFormWidget);
 
-        $userFormWidget->UserFormID = $userDefinedForm->ID;
-        $userFormWidget->write();
+		$this->assertFalse($userFormWidgetController->Showing());
 
-        $this->assertTrue($userFormWidgetController->Showing());
-    }
+		$userFormWidget->UserFormID = $userDefinedForm->ID;
+		$userFormWidget->write();
 
-    public function testFormContent()
-    {
-        $userDefinedForm = new UserDefinedForm();
-        $userDefinedForm->Title = 'User Defined Form';
-        $userDefinedForm->write();
-        $userDefinedForm->publishRecursive();
+		$this->assertTrue($userFormWidgetController->Showing());
+	}
 
-        $userFormWidget = new UserFormWidget();
-        $userFormWidget->write();
 
-        $userFormWidgetController = new UserFormWidgetController($userFormWidget);
+	/**
+	 *
+	 */
+	public function testFormContent() {
+		$userDefinedForm = new UserDefinedForm();
+		$userDefinedForm->Title = 'User Defined Form';
+		$userDefinedForm->write();
+		$userDefinedForm->publishRecursive();
 
-        $this->assertFalse($userFormWidgetController->FormContent());
+		$userFormWidget = new UserFormWidget();
+		$userFormWidget->write();
 
-        $userFormWidget->UserFormID = $userDefinedForm->ID;
-        $userFormWidget->write();
+		$userFormWidgetController = new UserFormWidgetController($userFormWidget);
 
-        $this->assertEquals('', $userFormWidgetController->FormContent()->getValue());
+		$this->assertFalse($userFormWidgetController->FormContent());
 
-        $userDefinedForm->Content = '';
-        $userDefinedForm->write();
-        $userDefinedForm->publishRecursive();
-        $userFormWidget->write();
+		$userFormWidget->UserFormID = $userDefinedForm->ID;
+		$userFormWidget->write();
 
-        $this->assertFalse($userFormWidgetController->FormContent());
+		$this->assertEquals('', $userFormWidgetController->FormContent()->getValue());
 
-        $userDefinedForm->Content = '<p>User Defined Form</p>';
-        $userDefinedForm->write();
-        $userDefinedForm->publishRecursive();
-        $userFormWidget->write();
+		$userDefinedForm->Content = '';
+		$userDefinedForm->write();
+		$userDefinedForm->publishRecursive();
+		$userFormWidget->write();
 
-        $formContent = $userFormWidgetController->FormContent()->getValue();
+		$this->assertFalse($userFormWidgetController->FormContent());
 
-        $this->assertContains('<p>User Defined Form</p>', $formContent);
-    }
+		$userDefinedForm->Content = '<p>User Defined Form</p>';
+		$userDefinedForm->write();
+		$userDefinedForm->publishRecursive();
+		$userFormWidget->write();
 
-    public function testUserDefinedForm()
-    {
-        $userDefinedForm = new UserDefinedForm();
-        $userDefinedForm->write();
-        $userDefinedForm->publishRecursive();
+		$formContent = $userFormWidgetController->FormContent()->getValue();
 
-        $textField = new EditableTextField();
-        $textField->Name = 'text-field';
-        $textField->Title = 'Text field';
-        $textField->write();
-        $textField->publishRecursive();
+		$this->assertStringContainsString('<p>User Defined Form</p>', $formContent);
+	}
 
-        $userDefinedForm->Fields()->add($textField);
 
-        $userFormWidget = new UserFormWidget();
-        $userFormWidget->write();
+	/**
+	 *
+	 */
+	public function testUserDefinedForm() {
+		$userDefinedForm = new UserDefinedForm();
+		$userDefinedForm->write();
+		$userDefinedForm->publishRecursive();
 
-        $userFormWidgetController = new UserFormWidgetController($userFormWidget);
-        $userFormWidgetController->getRequest()->setSession(new Session([]));
+		$textField = new EditableTextField();
+		$textField->Name = 'text-field';
+		$textField->Title = 'Text field';
+		$textField->write();
+		$textField->publishRecursive();
 
-        $this->assertNull($userFormWidgetController->UserDefinedForm());
+		$userDefinedForm->Fields()->add($textField);
 
-        $userFormWidget->UserFormID = $userDefinedForm->ID;
-        $userFormWidget->write();
+		$userFormWidget = new UserFormWidget();
+		$userFormWidget->write();
 
-        $form = $userFormWidgetController->UserDefinedForm();
+		$userFormWidgetController = new UserFormWidgetController($userFormWidget);
+		$userFormWidgetController->getRequest()->setSession(new Session([]));
 
-        $this->assertNotNull($form);
-        $this->assertEquals(Form::class, get_class($form));
-        $this->assertEquals(1, $form->Fields()->count());
-    }
+		$this->assertNull($userFormWidgetController->UserDefinedForm());
 
-    public function testUserDefinedFormSteps()
-    {
-        $userDefinedForm = new UserDefinedForm();
-        $userDefinedForm->write();
-        $userDefinedForm->publishRecursive();
+		$userFormWidget->UserFormID = $userDefinedForm->ID;
+		$userFormWidget->write();
 
-        $formStep1 = new EditableFormStep();
-        $formStep1->Name = 'form-step-1';
-        $formStep1->Title = 'Form step 1';
-        $formStep1->write();
-        $formStep1->publishRecursive();
+		$form = $userFormWidgetController->UserDefinedForm();
 
-        $textField1 = new EditableTextField();
-        $textField1->Name = 'text-field-1';
-        $textField1->Title = 'Text field 1';
-        $textField1->Required = true;
-        $textField1->write();
-        $textField1->publishRecursive();
+		$this->assertNotNull($form);
+		$this->assertEquals(Form::class, get_class($form));
+		$this->assertEquals(1, $form->Fields()->count());
+	}
 
-        $userDefinedForm->Fields()->add($formStep1);
-        $userDefinedForm->Fields()->add($textField1);
 
-        $userFormWidget = new UserFormWidget();
-        $userFormWidget->UserFormID = $userDefinedForm->ID;
-        $userFormWidget->write();
+	/**
+	 *
+	 */
+	public function testUserDefinedFormSteps() {
+		$userDefinedForm = new UserDefinedForm();
+		$userDefinedForm->write();
+		$userDefinedForm->publishRecursive();
 
-        $userFormWidgetController = new UserFormWidgetController($userFormWidget);
-        $userFormWidgetController->getRequest()->setSession(new Session([
-            "FormInfo.UserForm_Form_{$userDefinedForm->ID}.data" => [],
-        ]));
-        $form = $userFormWidgetController->UserDefinedForm();
+		$formStep1 = new EditableFormStep();
+		$formStep1->Name = 'form-step-1';
+		$formStep1->Title = 'Form step 1';
+		$formStep1->write();
+		$formStep1->publishRecursive();
 
-        $fields = $form->Fields();
-        $this->assertEquals(1, $fields->count());
+		$textField1 = new EditableTextField();
+		$textField1->Name = 'text-field-1';
+		$textField1->Title = 'Text field 1';
+		$textField1->Required = true;
+		$textField1->write();
+		$textField1->publishRecursive();
 
-        $formStep2 = new EditableFormStep();
-        $formStep2->Name = 'form-step-2';
-        $formStep2->Title = 'Form step 2';
-        $formStep2->write();
-        $formStep2->publishRecursive();
+		$userDefinedForm->Fields()->add($formStep1);
+		$userDefinedForm->Fields()->add($textField1);
 
-        $textField2 = new EditableTextField();
-        $textField2->Name = 'text-field-2';
-        $textField2->Title = 'Text field 2';
-        $textField2->write();
-        $textField2->publishRecursive();
+		$userFormWidget = new UserFormWidget();
+		$userFormWidget->UserFormID = $userDefinedForm->ID;
+		$userFormWidget->write();
 
-        $userDefinedForm->Fields()->add($formStep2);
-        $userDefinedForm->Fields()->add($textField2);
+		$userFormWidgetController = new UserFormWidgetController($userFormWidget);
+		$userFormWidgetController->getRequest()->setSession(new Session([
+					"FormInfo.UserForm_Form_{$userDefinedForm->ID}.data" => [],
+				]));
+		$form = $userFormWidgetController->UserDefinedForm();
 
-        $userFormWidget->write();
+		$fields = $form->Fields();
+		$this->assertEquals(1, $fields->count());
 
-        $form = $userFormWidgetController->UserDefinedForm();
+		$formStep2 = new EditableFormStep();
+		$formStep2->Name = 'form-step-2';
+		$formStep2->Title = 'Form step 2';
+		$formStep2->write();
+		$formStep2->publishRecursive();
 
-        $fields = $form->Fields();
-        $this->assertEquals(4, $fields->count());
-    }
+		$textField2 = new EditableTextField();
+		$textField2->Name = 'text-field-2';
+		$textField2->Title = 'Text field 2';
+		$textField2->write();
+		$textField2->publishRecursive();
 
-    public function testGetCMSFields()
-    {
-        $userFormWidget = new UserFormWidget();
-        $fields = $userFormWidget->getCMSFields();
+		$userDefinedForm->Fields()->add($formStep2);
+		$userDefinedForm->Fields()->add($textField2);
 
-        $this->assertNotNull($fields);
-    }
+		$userFormWidget->write();
+
+		$form = $userFormWidgetController->UserDefinedForm();
+
+		$fields = $form->Fields();
+		$this->assertEquals(4, $fields->count());
+	}
+
+
+	/**
+	 *
+	 */
+	public function testGetCMSFields() {
+		$userFormWidget = new UserFormWidget();
+		$fields = $userFormWidget->getCMSFields();
+
+		$this->assertNotNull($fields);
+	}
+
+
 }

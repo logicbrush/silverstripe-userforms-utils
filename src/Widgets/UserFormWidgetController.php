@@ -22,7 +22,7 @@ use SilverStripe\UserForms\Model\EditableFormField\EditableFormStep;
 use SilverStripe\UserForms\Model\UserDefinedForm;
 use SilverStripe\Widgets\Model\WidgetController;
 
-if (!class_exists(WidgetController::class)) {
+if ( ! class_exists( WidgetController::class ) ) {
 	return;
 }
 
@@ -35,7 +35,7 @@ class UserFormWidgetController extends WidgetController
 	 * @return unknown
 	 */
 	public function Showing() {
-		return ($userDefinedForm = $this->UserForm()) && $userDefinedForm->ID != Controller::curr()->ID;
+		return ( $userDefinedForm = $this->UserForm() ) && $userDefinedForm->ID != Controller::curr()->ID;
 	}
 
 
@@ -44,7 +44,7 @@ class UserFormWidgetController extends WidgetController
 	 * @return unknown
 	 */
 	public function FormContent() {
-		if ($this->UserForm()->exists() && $this->UserForm()->Content) {
+		if ( $this->UserForm()->exists() && $this->UserForm()->Content ) {
 			return DBField::create_field(
 				'HTMLText',
 				preg_replace(
@@ -66,39 +66,39 @@ class UserFormWidgetController extends WidgetController
 	public function UserDefinedForm() {
 		$userDefinedForm = $this->UserForm();
 
-		if (!$userDefinedForm || !$userDefinedForm->exists()) {
+		if ( ! $userDefinedForm || ! $userDefinedForm->exists() ) {
 			return null;
 		}
 
 		$fields = FieldList::create();
 		$required = RequiredFields::create();
 
-		$userDefinedFormFields = EditableFormField::get()->filter(['ParentID' => $userDefinedForm->ID]);
+		$userDefinedFormFields = EditableFormField::get()->filter( ['ParentID' => $userDefinedForm->ID] );
 
-		$this->setupFields($userDefinedFormFields, $fields, $required);
+		$this->setupFields( $userDefinedFormFields, $fields, $required );
 
 		$actions = FieldList::create();
 		$actions->push(
 			FormAction::create(
 				'process',
-				($userDefinedForm->SubmitButtonText) ? $userDefinedForm->SubmitButtonText : _t('UserDefinedForm.SUBMITBUTTON', 'Submit')
+				$userDefinedForm->SubmitButtonText ?: _t( 'UserDefinedForm.SUBMITBUTTON', 'Submit' )
 			)
 		);
 
-		$form = Form::create($this, UserDefinedForm::class, $fields, $actions, $required);
-		$form->setFormAction($this->UserForm()->Link('Form') . '?BackURL=' . urlencode($this->UserForm()->Link() . '#Form_Form'));
+		$form = Form::create( $this, UserDefinedForm::class, $fields, $actions, $required );
+		$form->setFormAction( $this->UserForm()->Link( 'Form' ) . '?BackURL=' . urlencode( $this->UserForm()->Link() . '#Form_Form' ) );
 
-		$data = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.data");
-		if (is_array($data)) {
+		$data = $this->getRequest()->getSession()->get( "FormInfo.UserForm_Form_{$userDefinedForm->ID}.data" );
+		if ( is_array( $data ) ) {
 
 			// Load form data.
-			$form->loadDataFrom($data);
+			$form->loadDataFrom( $data );
 
-			$result = $this->getRequest()->getSession()->get("FormInfo.UserForm_Form_{$userDefinedForm->ID}.result");
-			if (isset($result)) {
+			$result = $this->getRequest()->getSession()->get( "FormInfo.UserForm_Form_{$userDefinedForm->ID}.result" );
+			if ( isset( $result ) ) {
 
 				// Load form validation results.
-				$form->loadMessagesFrom(unserialize($result));
+				$form->loadMessagesFrom( unserialize( $result ) );
 
 			}
 		}
@@ -107,52 +107,50 @@ class UserFormWidgetController extends WidgetController
 	}
 
 
+
+
 	/**
 	 *
-	 * @param DataList       $userDefinedFormFields
-	 * @param FieldList      $fields
-	 * @param RequiredFields $required
 	 */
-	private function setupFields(DataList $userDefinedFormFields, FieldList $fields, RequiredFields $required) {
-		$formStepsCount = $userDefinedFormFields->filter(['ClassName' => EditableFormStep::class])->Count();
+	private function setupFields( DataList $userDefinedFormFields, FieldList $fields, RequiredFields $required ) {
+		$formStepsCount = $userDefinedFormFields->filter( ['ClassName' => EditableFormStep::class] )->Count();
 
-		foreach ($userDefinedFormFields as $field) {
-			if ($field instanceof EditableFormStep) {
-				$this->processFormStepFields($field, $fields, $formStepsCount);
+		foreach ( $userDefinedFormFields as $field ) {
+			if ( $field instanceof EditableFormStep ) {
+				$this->processFormStepFields( $field, $fields, $formStepsCount );
 
 				continue;
 			}
 
-			$fields->push($formField = $field->getFormField());
+			$fields->push( $formField = $field->getFormField() );
 
-			if ($field->Required) {
-				$required->addRequiredField($formField->Name);
-				$formField->addExtraClass('requiredField');
+			if ( $field->Required ) {
+				$required->addRequiredField( $formField->Name );
+				$formField->addExtraClass( 'requiredField' );
 			}
 		}
 	}
 
 
+
+
 	/**
 	 *
-	 * @param EditableFormStep $field
-	 * @param FieldList        $fields
-	 * @param int              $formStepsCount
 	 */
-	private function processFormStepFields(EditableFormStep $field, FieldList $fields, int $formStepsCount) {
-		if ($formStepsCount < 2) {
+	private function processFormStepFields( EditableFormStep $field, FieldList $fields, int $formStepsCount ) {
+		if ( $formStepsCount < 2 ) {
 			return;
 		}
 
 		$stepField = $field->getFormField();
 
-		if ($stepField->title) {
+		if ( $stepField->title ) {
 			$headerField = HeaderField::create(
 				$stepField->name,
 				$stepField->title,
 				3
 			);
-			$fields->push($headerField);
+			$fields->push( $headerField );
 		}
 	}
 

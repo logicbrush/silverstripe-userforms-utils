@@ -1,3 +1,4 @@
 resources
 composer.lock
 vendor
+*~

@@ -15,7 +15,7 @@ use SilverStripe\Forms\TextareaField;
 use SilverStripe\UserForms\Model\UserDefinedForm;
 use SilverStripe\Widgets\Model\Widget;
 
-if (!class_exists(Widget::class)) {
+if ( ! class_exists( Widget::class ) ) {
 	return;
 }
 
@@ -39,20 +39,21 @@ class UserFormWidget extends Widget
 
 	/**
 	 *
+	 * @Metrics( crap = 1 )
 	 * @return unknown
 	 */
 	public function getCMSFields() {
 		$fields = FieldList::create();
-		$fields->push(TextareaField::create('IntroText', 'Introductory text'));
+		$fields->push( TextareaField::create( 'IntroText', 'Introductory text' ) );
 		$fields->push(
 			DropdownField::create(
 				'UserFormID',
 				'Select a form',
-				UserDefinedForm::get()->map('ID', 'Title')
-			)->setEmptyString('')
+				UserDefinedForm::get()->map( 'ID', 'Title' )
+			)->setEmptyString( '' )
 		);
-		$fields->push(CheckboxField::create('ShowFormTitle', 'Show form title?'));
-		$fields->push(CheckboxField::create('ShowFormContent', 'Show form content?'));
+		$fields->push( CheckboxField::create( 'ShowFormTitle', 'Show form title?' ) );
+		$fields->push( CheckboxField::create( 'ShowFormContent', 'Show form content?' ) );
 
 		return $fields;
 	}

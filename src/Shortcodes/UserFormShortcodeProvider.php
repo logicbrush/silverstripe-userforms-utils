@@ -55,31 +55,31 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 	 * @param array           $extra     (optional) Extra arguments
 	 * @return string Result of the handled shortcode
 	 */
-	public static function handle_shortcode($args, $content, $parser, $shortcode, $extra = []) {
-		if (!isset($args['id']) || !$args['id']) {
+	public static function handle_shortcode( $args, $content, $parser, $shortcode, $extra = [] ) {
+		if ( ! isset( $args['id'] ) || ! $args['id'] ) {
 			return '';
 		}
 
 		$formID = $args['id'];
 
-		$userDefinedForm = UserDefinedForm::get()->byID($formID);
+		$userDefinedForm = UserDefinedForm::get()->byID( $formID );
 
-		if (!$userDefinedForm) {
+		if ( ! $userDefinedForm ) {
 			return '';
 		}
 
-		$userDefinedFormController = UserDefinedFormController::create($userDefinedForm);
+		$userDefinedFormController = UserDefinedFormController::create( $userDefinedForm );
 
 		$form = $userDefinedFormController->Form();
 		$data = $form->getSessionData();
 		$validationResult = $form->getSessionValidationResult();
 
-		if (is_array($data)) {
-			$form->setSessionData($data);
+		if ( is_array( $data ) ) {
+			$form->setSessionData( $data );
 		}
 
-		if (isset($validationResult)) {
-			$form->setSessionValidationResult($validationResult);
+		if ( isset( $validationResult ) ) {
+			$form->setSessionValidationResult( $validationResult );
 		}
 
 		self::loadUserFormsRequirements();
@@ -92,27 +92,27 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 	 *
 	 */
 	protected static function loadUserFormsRequirements() {
-		if (self::config()->get('block_default_userforms_requirements')) {
+		if ( self::config()->get( 'block_default_userforms_requirements' ) ) {
 			return;
 		}
 
-		if (!UserDefinedForm::config()->get('block_default_userforms_css')) {
-			Requirements::css('silverstripe/userforms:client/dist/styles/userforms.css');
+		if ( ! UserDefinedForm::config()->get( 'block_default_userforms_css' ) ) {
+			Requirements::css( 'silverstripe/userforms:client/dist/styles/userforms.css' );
 		}
 
-		if (!UserDefinedForm::config()->get('block_default_userforms_js')) {
+		if ( ! UserDefinedForm::config()->get( 'block_default_userforms_js' ) ) {
 			//Requirements::javascript('//code.jquery.com/jquery-3.4.1.min.js');
 			Requirements::javascript(
 				'silverstripe/userforms:client/dist/js/jquery-validation/jquery.validate.min.js'
 			);
-			Requirements::javascript('silverstripe/admin:client/dist/js/i18n.js');
-			Requirements::add_i18n_javascript('silverstripe/userforms:client/lang');
-			Requirements::javascript('silverstripe/userforms:client/dist/js/userforms.js');
+			Requirements::javascript( 'silverstripe/admin:client/dist/js/i18n.js' );
+			Requirements::add_i18n_javascript( 'silverstripe/userforms:client/lang' );
+			Requirements::javascript( 'silverstripe/userforms:client/dist/js/userforms.js' );
 
 			self::addUserFormsValidatei18n();
 
 			// Bind a confirmation message when navigating away from a partially completed form.
-			if (UserDefinedForm::config()->get('enable_are_you_sure')) {
+			if ( UserDefinedForm::config()->get( 'enable_are_you_sure' ) ) {
 				Requirements::javascript(
 					'silverstripe/userforms:client/dist/js/jquery.are-you-sure/jquery.are-you-sure.js'
 				);
@@ -125,22 +125,22 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 	 *
 	 */
 	protected static function addUserFormsValidatei18n() {
-		$module = ModuleLoader::getModule('silverstripe/userforms');
+		$module = ModuleLoader::getModule( 'silverstripe/userforms' );
 
 		$candidates = [
-			i18n::getData()->langFromLocale(i18n::config()->get('default_locale')),
-			i18n::config()->get('default_locale'),
-			i18n::getData()->langFromLocale(i18n::get_locale()),
+			i18n::getData()->langFromLocale( i18n::config()->get( 'default_locale' ) ),
+			i18n::config()->get( 'default_locale' ),
+			i18n::getData()->langFromLocale( i18n::get_locale() ),
 			i18n::get_locale(),
 		];
 
-		foreach ($candidates as $candidate) {
-			foreach (['messages', 'methods'] as $candidateType) {
+		foreach ( $candidates as $candidate ) {
+			foreach ( ['messages', 'methods'] as $candidateType ) {
 				$localisationCandidate = "client/thirdparty/jquery-validate/localization/{$candidateType}_{$candidate}.min.js";
 
-				$resource = $module->getResource($localisationCandidate);
-				if ($resource->exists()) {
-					Requirements::javascript($resource->getRelativePath());
+				$resource = $module->getResource( $localisationCandidate );
+				if ( $resource->exists() ) {
+					Requirements::javascript( $resource->getRelativePath() );
 				}
 			}
 		}

@@ -2,10 +2,22 @@ name: "Continuous Integration"
 
 on:
   push:
+    branches:
+      - "hotfix/**"
+      - "release/**"
+      - "develop"
+      - "master"
+  pull_request:
+    branches:
+      - "hotfix/**"
+      - "release/**"
+      - "develop"
+      - "master"
 
 jobs:
 
-  tests:
+  test:
+
     strategy:
       fail-fast: false
       matrix:
@@ -31,5 +43,61 @@ jobs:
           php_version: ${{ matrix.php-version }}
           php_extensions: intl
       - run: |
+          ./vendor/bin/phpunit -c phpunit.xml.dist
+
+  tidy:
+
+    name: "Annotate & Tidy"
+    needs: [test]
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+        with:
+          command: update
+            --with silverstripe/framework:^5.0
+          php_version: 8.1
+          php_extensions: xdebug intl
+      - name: Generate Code Coverage
+        run: |
+          XDEBUG_MODE=coverage \
           ./vendor/bin/phpunit -c phpunit.xml.dist \
           --coverage-clover ./coverage.xml
+      - name: Annotate with Metrics
+        run: |
+          find src -name "*.php" | xargs ./vendor/bin/metrics annotate ./coverage.xml
+      - name: Refactor with Rector
+        run: |
+          ./vendor/bin/rector process src
+      - name: Tidy Source Code
+        run: |
+          find tests -name "*.php" | xargs ./vendor/bin/phptidy.php replace
+          find src -name "*.php" | xargs ./vendor/bin/phptidy.php replace
+      - name: Push Back Changes
+        run: |
+          git diff --exit-code src || ( \
+            git config user.name github-actions && \
+            git config user.email github-actions@github.com && \
+            git add src && \
+            git commit -m "tidy" && \
+            git fetch --unshallow origin ${{ github.head_ref || github.ref_name }} && \
+            git push origin HEAD:${{ github.head_ref || github.ref_name }} \
+          )
+
+  merge:
+
+    name: "Merge Changes"
+    if: github.event_name == 'push'
+    needs: [test]
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          false || ( \
+            git config user.name github-actions && \
+            git config user.email github-actions@github.com && \
+            git fetch --unshallow origin ${{ github.ref_name }} develop && \
+            git checkout develop && \
+            git merge origin/${{ github.ref_name }} && \
+            git push \
+          )

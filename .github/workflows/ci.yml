@@ -16,39 +16,8 @@ on:
 
 jobs:
 
-  test:
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '5.0'
-            php-version: '8.1'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '4.0'
-            php-version: '8.0'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '4.0'
-            php-version: '7.4'
-
-    name: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: php-actions/composer@v6
-        with:
-          command: update
-            --with silverstripe/framework:^${{ matrix.silverstripe-version }}
-          php_version: ${{ matrix.php-version }}
-          php_extensions: intl
-      - run: |
-          ./vendor/bin/phpunit -c phpunit.xml.dist
-
-  tidy:
-
-    name: "Annotate & Tidy"
-    needs: [test]
+  latest:
+    name: "Test & Update"
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3
@@ -56,7 +25,7 @@ jobs:
         with:
           command: update
             --with silverstripe/framework:^5.0
-          php_version: 8.1
+          php_version: 8.2
           php_extensions: xdebug intl
       - name: Generate Code Coverage
         run: |
@@ -84,11 +53,40 @@ jobs:
             git push origin HEAD:${{ github.head_ref || github.ref_name }} \
           )
 
-  merge:
+  matrix:
+    name: "Test Matrix"
+    needs: [latest]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - operating-system: 'ubuntu-latest'
+            silverstripe-version: '5.0'
+            php-version: '8.1'
+          - operating-system: 'ubuntu-latest'
+            silverstripe-version: '4.0'
+            php-version: '8.0'
+          - operating-system: 'ubuntu-latest'
+            silverstripe-version: '4.0'
+            php-version: '7.4'
 
+    name: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+        with:
+          command: update
+            --with silverstripe/framework:^${{ matrix.silverstripe-version }}
+          php_version: ${{ matrix.php-version }}
+          php_extensions: intl
+      - run: |
+          ./vendor/bin/phpunit -c phpunit.xml.dist
+
+  merge:
     name: "Merge Changes"
     if: github.event_name == 'push'
-    needs: [test]
+    needs: [latest,matrix]
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3

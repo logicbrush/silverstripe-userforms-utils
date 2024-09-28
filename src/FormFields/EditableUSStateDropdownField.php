@@ -1,9 +1,4 @@
 <?php
-/**
- * src/FormFields/EditableUSStateDropdownField.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\FormFields;
@@ -23,7 +18,6 @@ use SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
  *
  * @property bool $UseEmptyString
  * @property string $EmptyString
- * @package userform-utils
  */
 class EditableUSStateDropdownField extends EditableFormField {
 

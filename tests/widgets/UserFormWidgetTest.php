@@ -1,9 +1,4 @@
 <?php
-/**
- * tests/widgets/UserFormWidgetTest.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\Tests\Widgets;

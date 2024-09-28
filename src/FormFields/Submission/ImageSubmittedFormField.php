@@ -1,9 +1,4 @@
 <?php
-/**
- * src/FormFields/Submission/ImageSubmittedFormField.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\FormFields\Submission;

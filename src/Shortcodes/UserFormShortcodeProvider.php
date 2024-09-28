@@ -1,9 +1,4 @@
 <?php
-/**
- * src/Shortcodes/UserFormShortcodeProvider.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\Shortcodes;

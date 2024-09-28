@@ -1,8 +1,4 @@
 <?php
-/**
- *
- * @package default
- */
 
 
 declare( strict_types = 1 );

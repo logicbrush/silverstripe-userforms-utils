@@ -1,9 +1,4 @@
 <?php
-/**
- * src/FormFields/EditableSignatureField.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\FormFields;

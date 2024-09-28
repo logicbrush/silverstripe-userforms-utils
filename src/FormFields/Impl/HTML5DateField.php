@@ -1,9 +1,4 @@
 <?php
-/**
- * src/FormFields/Impl/HTML5DateField.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\FormFields\Impl;

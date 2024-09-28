@@ -1,9 +1,4 @@
 <?php
-/**
- * src/Widgets/UserFormWidgetController.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\Widgets;

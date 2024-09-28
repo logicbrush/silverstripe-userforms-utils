@@ -37,6 +37,8 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 	 * Gets the list of shortcodes provided by this handler
 	 *
 	 * @return string[]
+	 *
+	 * @Metrics( crap = 1 )
 	 */
 	public static function get_shortcodes() {
 		return [
@@ -54,6 +56,8 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 	 * @param string          $shortcode Name of shortcode used to register this handler
 	 * @param array           $extra     (optional) Extra arguments
 	 * @return string Result of the handled shortcode
+	 *
+	 * @Metrics( crap = 6.07 )
 	 */
 	public static function handle_shortcode( $args, $content, $parser, $shortcode, $extra = [] ) {
 		if ( ! isset( $args['id'] ) || ! $args['id'] ) {
@@ -90,6 +94,8 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 
 	/**
 	 *
+	 *
+	 * @Metrics( crap = 5 )
 	 */
 	protected static function loadUserFormsRequirements() {
 		if ( self::config()->get( 'block_default_userforms_requirements' ) ) {
@@ -123,6 +129,8 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 
 	/**
 	 *
+	 *
+	 * @Metrics( crap = 4.01 )
 	 */
 	protected static function addUserFormsValidatei18n() {
 		$module = ModuleLoader::getModule( 'silverstripe/userforms' );

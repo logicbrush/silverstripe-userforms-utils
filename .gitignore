@@ -2,3 +2,7 @@ resources
 composer.lock
 vendor
 *~
+coverage.xml
+public/assets
+.phpunit.result.cache
+app

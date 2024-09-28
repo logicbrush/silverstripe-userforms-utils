@@ -1,11 +1,23 @@
 name: "Continuous Integration"
 
-on:
+on:   
   push:
+    branches:
+      - "hotfix/**"
+      - "release/**"
+      - "develop"
+      - "master"
+  pull_request:
+    branches:
+      - "hotfix/**"
+      - "release/**"
+      - "develop"
+      - "master"
 
 jobs:
 
-  tests:
+  test:
+
     strategy:
       fail-fast: false
       matrix:
@@ -19,7 +31,7 @@ jobs:
           - operating-system: 'ubuntu-latest'
             silverstripe-version: '4.0'
             php-version: '7.4'
-
+  
     name: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}
     runs-on: ${{ matrix.operating-system }}
     steps:
@@ -33,3 +45,55 @@ jobs:
       - run: |
           ./vendor/bin/phpunit -c phpunit.xml.dist \
           --coverage-clover ./coverage.xml
+
+  tidy:
+
+    name: "Annotate & Tidy"
+    needs: [test]
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+      - name: PHPUnit Tests
+        uses: php-actions/phpunit@master
+        with:
+          php_extensions: xdebug
+          bootstrap: vendor/autoload.php
+          configuration: phpunit.xml.dist
+          args: --coverage-clover ./coverage.xml
+        env:
+          XDEBUG_MODE: coverage
+      - run: |
+          find src -name "*.php" -exec ./bin/metrics annotate ./coverage.xml {} \;
+      - run: |
+          ./vendor/bin/rector process src
+      - run: |
+          find tests -name "*.php" -exec ./vendor/bin/phptidy.php replace {} \;
+          find src -name "*.php" -exec ./vendor/bin/phptidy.php replace {} \;
+      - run: |
+          git diff --exit-code src || ( \
+            git config user.name github-actions && \
+            git config user.email github-actions@github.com && \
+            git add src && \
+            git commit -m "tidy" && \
+            git fetch --unshallow origin ${{ github.head_ref || github.ref_name }} && \
+            git push origin HEAD:${{ github.head_ref || github.ref_name }} \
+          )
+
+  merge:
+
+    name: "Merge Changes"
+    if: github.event_name == 'push'
+    needs: [test]
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          false || ( \
+            git config user.name github-actions && \
+            git config user.email github-actions@github.com && \
+            git fetch --unshallow origin ${{ github.ref_name }} develop && \
+            git checkout develop && \
+            git merge origin/${{ github.ref_name }} && \
+            git push \
+          )

@@ -21,6 +21,7 @@ class EditableHTML5DateField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @return unknown
 	 */
 	public function getFormField() {

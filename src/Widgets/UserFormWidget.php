@@ -34,6 +34,7 @@ class UserFormWidget extends Widget
 
 	/**
 	 *
+	 * @Metrics( crap = 1 )
 	 * @return unknown
 	 */
 

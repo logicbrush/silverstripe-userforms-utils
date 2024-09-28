@@ -86,6 +86,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @return FieldList
 	 */
 	public function getCMSFields() {
@@ -116,6 +117,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 30, uncovered = true )
 	 * @return unknown
 	 */
 	public function getFormField() {
@@ -143,6 +145,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @param unknown $data
 	 * @return unknown
 	 */
@@ -157,6 +160,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @return unknown
 	 */
 	public function getIcon() {
@@ -172,6 +176,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @param unknown $forOnLoad (optional)
 	 * @return unknown
 	 */

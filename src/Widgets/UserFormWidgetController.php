@@ -27,6 +27,7 @@ class UserFormWidgetController extends WidgetController
 
 	/**
 	 *
+	 * @Metrics( crap = 2 )
 	 * @return unknown
 	 */
 
@@ -38,6 +39,7 @@ class UserFormWidgetController extends WidgetController
 
 	/**
 	 *
+	 * @Metrics( crap = 3 )
 	 * @return unknown
 	 */
 	public function FormContent() {
@@ -58,6 +60,7 @@ class UserFormWidgetController extends WidgetController
 
 	/**
 	 *
+	 * @Metrics( crap = 6.19 )
 	 * @return unknown
 	 */
 	public function UserDefinedForm() {
@@ -108,6 +111,7 @@ class UserFormWidgetController extends WidgetController
 
 	/**
 	 *
+	 * @Metrics( crap = 4 )
 	 */
 	private function setupFields( DataList $userDefinedFormFields, FieldList $fields, RequiredFields $required ) {
 		$formStepsCount = $userDefinedFormFields->filter( ['ClassName' => EditableFormStep::class] )->Count();
@@ -133,6 +137,7 @@ class UserFormWidgetController extends WidgetController
 
 	/**
 	 *
+	 * @Metrics( crap = 3 )
 	 */
 	private function processFormStepFields( EditableFormStep $field, FieldList $fields, int $formStepsCount ) {
 		if ( $formStepsCount < 2 ) {

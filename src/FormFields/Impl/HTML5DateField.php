@@ -9,6 +9,7 @@ class HTML5DateField extends DateField {
 
 	/**
 	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @param unknown $name
 	 * @param unknown $title (optional)
 	 * @param unknown $value (optional)
@@ -23,6 +24,7 @@ class HTML5DateField extends DateField {
 
 	/**
 	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @return unknown
 	 */
 	public function getAttributes() {

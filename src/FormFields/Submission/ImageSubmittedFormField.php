@@ -10,6 +10,7 @@ class ImageSubmittedFormField extends SubmittedFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @return unknown
 	 */
 

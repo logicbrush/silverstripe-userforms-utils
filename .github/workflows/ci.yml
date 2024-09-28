@@ -54,8 +54,6 @@ jobs:
           )
 
   matrix:
-    name: "Test Matrix"
-    needs: [latest]
     strategy:
       fail-fast: false
       matrix:
@@ -69,8 +67,8 @@ jobs:
           - operating-system: 'ubuntu-latest'
             silverstripe-version: '4.0'
             php-version: '7.4'
-
     name: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}
+    needs: [latest]
     runs-on: ${{ matrix.operating-system }}
     steps:
       - uses: actions/checkout@v3

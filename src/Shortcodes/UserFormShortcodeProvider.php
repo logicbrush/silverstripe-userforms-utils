@@ -16,6 +16,8 @@ use SilverStripe\View\Requirements;
  * Provider for the [user_form] shortcode tag used to embed a user form
  * in the HTML Editor field.
  */
+
+
 class UserFormShortcodeProvider implements ShortcodeHandler
 {
 	use Configurable;

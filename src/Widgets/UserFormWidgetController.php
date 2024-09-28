@@ -29,6 +29,8 @@ class UserFormWidgetController extends WidgetController
 	 *
 	 * @return unknown
 	 */
+
+
 	public function Showing() {
 		return ( $userDefinedForm = $this->UserForm() ) && $userDefinedForm->ID != Controller::curr()->ID;
 	}

@@ -12,6 +12,8 @@ class ImageSubmittedFormField extends SubmittedFormField {
 	 *
 	 * @return unknown
 	 */
+
+
 	public function getFormattedValue() {
 		if ( $this->Value ) {
 			return DBField::create_field( 'HTMLText', sprintf(

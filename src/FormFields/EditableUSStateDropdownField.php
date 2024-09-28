@@ -19,6 +19,8 @@ use SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
  * @property bool $UseEmptyString
  * @property string $EmptyString
  */
+
+
 class EditableUSStateDropdownField extends EditableFormField {
 
 	private static $singular_name = 'US State Dropdown';

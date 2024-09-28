@@ -37,6 +37,8 @@ class UserFormWidget extends Widget
 	 * @Metrics( crap = 1 )
 	 * @return unknown
 	 */
+
+
 	public function getCMSFields() {
 		$fields = FieldList::create();
 		$fields->push( TextareaField::create( 'IntroText', 'Introductory text' ) );

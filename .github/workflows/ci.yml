@@ -34,14 +34,14 @@ jobs:
           --coverage-clover ./coverage.xml
       - name: Annotate with Metrics
         run: |
-          find src -name "*.php" | xargs ./vendor/bin/metrics annotate ./coverage.xml
+          find src -name "*.php" | xargs -n 1 ./vendor/bin/metrics annotate ./coverage.xml
       - name: Refactor with Rector
         run: |
           ./vendor/bin/rector process src
       - name: Tidy Source Code
         run: |
-          find tests -name "*.php" | xargs ./vendor/bin/phptidy.php replace
-          find src -name "*.php" | xargs ./vendor/bin/phptidy.php replace
+          find tests -name "*.php" | xargs -n 1 ./vendor/bin/phptidy.php replace
+          find src -name "*.php" | xargs -n 1 ./vendor/bin/phptidy.php replace
       - name: Push Back Changes
         run: |
           git diff --exit-code src || ( \

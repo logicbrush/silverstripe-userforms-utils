@@ -1,6 +1,6 @@
 name: "Continuous Integration"
 
-on:   
+on:
   push:
     branches:
       - "hotfix/**"
@@ -31,7 +31,7 @@ jobs:
           - operating-system: 'ubuntu-latest'
             silverstripe-version: '4.0'
             php-version: '7.4'
-  
+
     name: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}
     runs-on: ${{ matrix.operating-system }}
     steps:
@@ -54,6 +54,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: php-actions/composer@v6
+        with:
+          command: update
+            --with silverstripe/framework:^5.0
+          php_version: 8.1
+          php_extensions: intl
       - name: PHPUnit Tests
         uses: php-actions/phpunit@master
         with:

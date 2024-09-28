@@ -30,10 +30,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 	private static $singular_name = 'US State Dropdown';
 	private static $plural_name = 'US State Dropdowns';
 
-	private static $db = array(
-		'UseEmptyString' => 'Boolean',
-		'EmptyString' => 'Varchar(255)',
-	);
+	private static $db = ['UseEmptyString' => 'Boolean', 'EmptyString' => 'Varchar(255)'];
 
 	private static $table_name = 'EditableUSStateDropdownField';
 
@@ -93,14 +90,14 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
-	 * @return \SilverStripe\Forms\FieldList
+	 * @return FieldList
 	 */
 	public function getCMSFields() {
 		$this->beforeUpdateCMSFields(function (FieldList $fields) {
 				$fields->removeByName('Default');
 				$fields->addFieldToTab(
 					'Root.Main',
-					DropdownField::create('Default', _t(__CLASS__ . '.DEFAULT', 'Default value'))
+					DropdownField::create('Default', _t(self::class . '.DEFAULT', 'Default value'))
 					->setSource(self::$list_of_states)
 					->setHasEmptyDefault(true)
 					->setEmptyString('---')
@@ -108,12 +105,12 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 				$fields->addFieldToTab(
 					'Root.Main',
-					CheckboxField::create('UseEmptyString', _t(__CLASS__ . '.USE_EMPTY_STRING', 'Set default empty string'))
+					CheckboxField::create('UseEmptyString', _t(self::class . '.USE_EMPTY_STRING', 'Set default empty string'))
 				);
 
 				$fields->addFieldToTab(
 					'Root.Main',
-					TextField::create('EmptyString', _t(__CLASS__ . '.EMPTY_STRING', 'Empty String'))
+					TextField::create('EmptyString', _t(self::class . '.EMPTY_STRING', 'Empty String'))
 				);
 			});
 
@@ -158,6 +155,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 			$source = $this->getFormField()->getSource();
 			return $source[$data[$this->Name]];
 		}
+		return null;
 	}
 
 

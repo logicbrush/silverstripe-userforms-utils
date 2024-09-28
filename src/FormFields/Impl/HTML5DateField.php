@@ -31,9 +31,7 @@ class HTML5DateField extends DateField {
 	public function getAttributes() {
 		return array_merge(
 			parent::getAttributes(),
-			array(
-				'type' => 'date'
-			)
+			['type' => 'date']
 		);
 	}
 

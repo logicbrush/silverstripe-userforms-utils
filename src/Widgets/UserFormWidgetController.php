@@ -81,7 +81,7 @@ class UserFormWidgetController extends WidgetController
 		$actions->push(
 			FormAction::create(
 				'process',
-				($userDefinedForm->SubmitButtonText) ? $userDefinedForm->SubmitButtonText : _t('UserDefinedForm.SUBMITBUTTON', 'Submit')
+				$userDefinedForm->SubmitButtonText ?: _t('UserDefinedForm.SUBMITBUTTON', 'Submit')
 			)
 		);
 
@@ -105,6 +105,7 @@ class UserFormWidgetController extends WidgetController
 
 		return $form;
 	}
+
 
 
 	/**
@@ -131,6 +132,7 @@ class UserFormWidgetController extends WidgetController
 			}
 		}
 	}
+
 
 
 	/**

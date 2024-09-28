@@ -107,6 +107,7 @@ class UserFormWidgetController extends WidgetController
 	}
 
 
+
 	
  private function setupFields(DataList $userDefinedFormFields, FieldList $fields, RequiredFields $required) {
 		$formStepsCount = $userDefinedFormFields->filter(['ClassName' => EditableFormStep::class])->Count();
@@ -126,6 +127,7 @@ class UserFormWidgetController extends WidgetController
 			}
 		}
 	}
+
 
 
 	

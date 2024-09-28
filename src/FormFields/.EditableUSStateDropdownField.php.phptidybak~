@@ -89,10 +89,10 @@ class EditableUSStateDropdownField extends EditableFormField {
 	];
 
 	/**
-  *
-  * @return FieldList
-  */
- public function getCMSFields() {
+	 *
+	 * @return FieldList
+	 */
+	public function getCMSFields() {
 		$this->beforeUpdateCMSFields(function (FieldList $fields) {
 				$fields->removeByName('Default');
 				$fields->addFieldToTab(
@@ -155,7 +155,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 			$source = $this->getFormField()->getSource();
 			return $source[$data[$this->Name]];
 		}
-  return null;
+		return null;
 	}
 
 

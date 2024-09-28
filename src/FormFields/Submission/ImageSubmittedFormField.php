@@ -18,11 +18,11 @@ class ImageSubmittedFormField extends SubmittedFormField {
 	 * @return unknown
 	 */
 	public function getFormattedValue() {
-		if ($this->Value) {
-			return DBField::create_field('HTMLText', sprintf(
+		if ( $this->Value ) {
+			return DBField::create_field( 'HTMLText', sprintf(
 					'<img src="data:%s" />',
-					htmlspecialchars($this->Value, ENT_QUOTES)
-				));
+					htmlspecialchars( $this->Value, ENT_QUOTES )
+				) );
 		}
 		return false;
 	}

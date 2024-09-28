@@ -93,26 +93,26 @@ class EditableUSStateDropdownField extends EditableFormField {
 	 * @return FieldList
 	 */
 	public function getCMSFields() {
-		$this->beforeUpdateCMSFields(function (FieldList $fields) {
-				$fields->removeByName('Default');
+		$this->beforeUpdateCMSFields( function ( FieldList $fields ) {
+				$fields->removeByName( 'Default' );
 				$fields->addFieldToTab(
 					'Root.Main',
-					DropdownField::create('Default', _t(self::class . '.DEFAULT', 'Default value'))
-					->setSource(self::$list_of_states)
-					->setHasEmptyDefault(true)
-					->setEmptyString('---')
+					DropdownField::create( 'Default', _t( self::class . '.DEFAULT', 'Default value' ) )
+					->setSource( self::$list_of_states )
+					->setHasEmptyDefault( true )
+					->setEmptyString( '---' )
 				);
 
 				$fields->addFieldToTab(
 					'Root.Main',
-					CheckboxField::create('UseEmptyString', _t(self::class . '.USE_EMPTY_STRING', 'Set default empty string'))
+					CheckboxField::create( 'UseEmptyString', _t( self::class . '.USE_EMPTY_STRING', 'Set default empty string' ) )
 				);
 
 				$fields->addFieldToTab(
 					'Root.Main',
-					TextField::create('EmptyString', _t(self::class . '.EMPTY_STRING', 'Empty String'))
+					TextField::create( 'EmptyString', _t( self::class . '.EMPTY_STRING', 'Empty String' ) )
 				);
-			});
+			} );
 
 		return parent::getCMSFields();
 	}
@@ -123,23 +123,23 @@ class EditableUSStateDropdownField extends EditableFormField {
 	 * @return unknown
 	 */
 	public function getFormField() {
-		$field = DropdownField::create($this->Name, $this->Title ?: false)
-		->setFieldHolderTemplate(EditableFormField::class . '_holder')
-		->setTemplate(EditableDropdown::class)
-		->setSource(self::$list_of_states)
+		$field = DropdownField::create( $this->Name, $this->Title ?: false )
+		->setFieldHolderTemplate( EditableFormField::class . '_holder' )
+		->setTemplate( EditableDropdown::class )
+		->setSource( self::$list_of_states )
 		;
 
 		// Empty string
-		if ($this->UseEmptyString) {
-			$field->setEmptyString($this->EmptyString ?: '');
+		if ( $this->UseEmptyString ) {
+			$field->setEmptyString( $this->EmptyString ?: '' );
 		}
 
 		// Set default
-		if ($this->Default) {
-			$field->setValue($this->Default);
+		if ( $this->Default ) {
+			$field->setValue( $this->Default );
 		}
 
-		$this->doUpdateFormField($field);
+		$this->doUpdateFormField( $field );
 
 		return $field;
 	}
@@ -150,8 +150,8 @@ class EditableUSStateDropdownField extends EditableFormField {
 	 * @param unknown $data
 	 * @return unknown
 	 */
-	public function getValueFromData($data) {
-		if (!empty($data[$this->Name])) {
+	public function getValueFromData( $data ) {
+		if ( ! empty( $data[$this->Name] ) ) {
 			$source = $this->getFormField()->getSource();
 			return $source[$data[$this->Name]];
 		}
@@ -164,9 +164,9 @@ class EditableUSStateDropdownField extends EditableFormField {
 	 * @return unknown
 	 */
 	public function getIcon() {
-		$resource = ModuleLoader::getModule('silverstripe/userforms')->getResource('images/editabledropdown.png');
+		$resource = ModuleLoader::getModule( 'silverstripe/userforms' )->getResource( 'images/editabledropdown.png' );
 
-		if (!$resource->exists()) {
+		if ( ! $resource->exists() ) {
 			return '';
 		}
 
@@ -176,11 +176,10 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
-	 * @param EditableCustomRule $rule
-	 * @param unknown            $forOnLoad (optional)
+	 * @param unknown $forOnLoad (optional)
 	 * @return unknown
 	 */
-	public function getSelectorField(EditableCustomRule $rule, $forOnLoad = false) {
+	public function getSelectorField( EditableCustomRule $rule, $forOnLoad = false ) {
 		return "$(\"select[name='{$this->Name}']\")";
 	}
 

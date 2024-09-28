@@ -28,10 +28,10 @@ class EditableHTML5DateField extends EditableFormField {
 	 * @return unknown
 	 */
 	public function getFormField() {
-		$field = HTML5DateField::create($this->Name, $this->Title ?: false)
-		->setFieldHolderTemplate(EditableFormField::class . '_holder')
+		$field = HTML5DateField::create( $this->Name, $this->Title ?: false )
+		->setFieldHolderTemplate( EditableFormField::class . '_holder' )
 		;
-		$this->doUpdateFormField($field);
+		$this->doUpdateFormField( $field );
 		return $field;
 	}
 

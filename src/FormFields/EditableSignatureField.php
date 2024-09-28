@@ -25,11 +25,11 @@ class EditableSignatureField extends EditableFormField {
 	 * @return unknown
 	 */
 	public function getFormField() {
-		$field = TextField::create($this->Name, $this->Title ?: false)
-		->setFieldHolderTemplate(EditableFormField::class . '_holder')
-		->setTemplate(EditableSignatureField::class)
+		$field = TextField::create( $this->Name, $this->Title ?: false )
+		->setFieldHolderTemplate( EditableFormField::class . '_holder' )
+		->setTemplate( EditableSignatureField::class )
 		;
-		$this->doUpdateFormField($field);
+		$this->doUpdateFormField( $field );
 		return $field;
 	}
 

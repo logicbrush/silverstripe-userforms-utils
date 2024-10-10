@@ -8,7 +8,8 @@ These include:
   - a *shortcode* with which to insert a user form into any content area;
   - a *form widget* that presents a user form (requires
     [silverstripe/widgets](https://github.com/silverstripe/silverstripe-widgets));
-  - various new *form fields*.
+  - various *additional validations* for existing form fields;
+  - various *new form fields*.
 
 ## Installation
 
@@ -43,7 +44,14 @@ You have the ability to customize display with the following options:
  - **Show form content?** - Chose whether to display the content of the form
    page.
 
-## Form Fields
+## Additional Field Validations
+
+### Maximum File Size
+
+The maximum file size for a form fields will now be checked prior to submission.
+This is much more responsive for the user.
+
+## New Form Fields
 
 This module provides a selection of new field types to use with your user forms.
 

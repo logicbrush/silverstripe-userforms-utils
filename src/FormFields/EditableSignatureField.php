@@ -1,9 +1,4 @@
 <?php
-/**
- * src/FormFields/EditableSignatureField.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\FormFields;
@@ -22,8 +17,11 @@ class EditableSignatureField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @return unknown
 	 */
+
+
 	public function getFormField() {
 		$field = TextField::create( $this->Name, $this->Title ?: false )
 		->setFieldHolderTemplate( EditableFormField::class . '_holder' )
@@ -38,6 +36,8 @@ class EditableSignatureField extends EditableFormField {
 	 * Returns an image field, so the signature can be viewed in the CMS and in
 	 * reports.
 	 *
+	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @return unknown
 	 */
 	public function getSubmittedFormField() : SubmittedFormField

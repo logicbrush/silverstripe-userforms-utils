@@ -1,3 +1,4 @@
 ---
 Name: userforms-utils
+After: 'userforms/*'
 ---

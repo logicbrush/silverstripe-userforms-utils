@@ -1,9 +1,4 @@
 <?php
-/**
- * src/Widgets/UserFormWidget.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\Widgets;
@@ -42,6 +37,8 @@ class UserFormWidget extends Widget
 	 * @Metrics( crap = 1 )
 	 * @return unknown
 	 */
+
+
 	public function getCMSFields() {
 		$fields = FieldList::create();
 		$fields->push( TextareaField::create( 'IntroText', 'Introductory text' ) );

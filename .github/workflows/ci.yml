@@ -16,39 +16,8 @@ on:
 
 jobs:
 
-  test:
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '5.0'
-            php-version: '8.1'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '4.0'
-            php-version: '8.0'
-          - operating-system: 'ubuntu-latest'
-            silverstripe-version: '4.0'
-            php-version: '7.4'
-
-    name: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: php-actions/composer@v6
-        with:
-          command: update
-            --with silverstripe/framework:^${{ matrix.silverstripe-version }}
-          php_version: ${{ matrix.php-version }}
-          php_extensions: intl
-      - run: |
-          ./vendor/bin/phpunit -c phpunit.xml.dist
-
-  tidy:
-
-    name: "Annotate & Tidy"
-    needs: [test]
+  latest:
+    name: "Build & Verify"
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3
@@ -65,30 +34,56 @@ jobs:
           --coverage-clover ./coverage.xml
       - name: Annotate with Metrics
         run: |
-          find src -name "*.php" | xargs ./vendor/bin/metrics annotate ./coverage.xml
+          find src -name "*.php" | xargs -n 1 ./vendor/bin/metrics annotate ./coverage.xml
       - name: Refactor with Rector
         run: |
           ./vendor/bin/rector process src
       - name: Tidy Source Code
         run: |
-          find tests -name "*.php" | xargs ./vendor/bin/phptidy.php replace
-          find src -name "*.php" | xargs ./vendor/bin/phptidy.php replace
+          find tests -name "*.php" | xargs -n 1 ./vendor/bin/phptidy.php replace
+          find src -name "*.php" | xargs -n 1 ./vendor/bin/phptidy.php replace
       - name: Push Back Changes
         run: |
           git diff --exit-code src || ( \
             git config user.name github-actions && \
             git config user.email github-actions@github.com && \
-            git add src && \
+            git add . && \
             git commit -m "tidy" && \
             git fetch --unshallow origin ${{ github.head_ref || github.ref_name }} && \
             git push origin HEAD:${{ github.head_ref || github.ref_name }} \
           )
 
-  merge:
+  matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - operating-system: 'ubuntu-latest'
+            silverstripe-version: '5.0'
+            php-version: '8.1'
+          - operating-system: 'ubuntu-latest'
+            silverstripe-version: '4.0'
+            php-version: '8.0'
+          - operating-system: 'ubuntu-latest'
+            silverstripe-version: '4.0'
+            php-version: '7.4'
+    name: "Matrix: SS ${{ matrix.silverstripe-version }}, PHP ${{ matrix.php-version }}"
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+        with:
+          command: update
+            --with silverstripe/framework:^${{ matrix.silverstripe-version }}
+          php_version: ${{ matrix.php-version }}
+          php_extensions: intl
+      - run: |
+          ./vendor/bin/phpunit -c phpunit.xml.dist
 
+  merge:
     name: "Merge Changes"
     if: github.event_name == 'push'
-    needs: [test]
+    needs: [latest,matrix]
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3

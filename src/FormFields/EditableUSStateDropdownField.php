@@ -1,9 +1,4 @@
 <?php
-/**
- * src/FormFields/EditableUSStateDropdownField.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\FormFields;
@@ -23,8 +18,9 @@ use SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
  *
  * @property bool $UseEmptyString
  * @property string $EmptyString
- * @package userform-utils
  */
+
+
 class EditableUSStateDropdownField extends EditableFormField {
 
 	private static $singular_name = 'US State Dropdown';
@@ -90,6 +86,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @return FieldList
 	 */
 	public function getCMSFields() {
@@ -120,6 +117,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 30, uncovered = true )
 	 * @return unknown
 	 */
 	public function getFormField() {
@@ -147,6 +145,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @param unknown $data
 	 * @return unknown
 	 */
@@ -161,6 +160,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @return unknown
 	 */
 	public function getIcon() {
@@ -176,6 +176,7 @@ class EditableUSStateDropdownField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 2, uncovered = true )
 	 * @param unknown $forOnLoad (optional)
 	 * @return unknown
 	 */

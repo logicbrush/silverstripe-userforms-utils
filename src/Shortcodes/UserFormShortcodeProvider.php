@@ -1,9 +1,4 @@
 <?php
-/**
- * src/Shortcodes/UserFormShortcodeProvider.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\Shortcodes;
@@ -21,6 +16,8 @@ use SilverStripe\View\Requirements;
  * Provider for the [user_form] shortcode tag used to embed a user form
  * in the HTML Editor field.
  */
+
+
 class UserFormShortcodeProvider implements ShortcodeHandler
 {
 	use Configurable;
@@ -36,6 +33,8 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 	/**
 	 * Gets the list of shortcodes provided by this handler
 	 *
+	 *
+	 * @Metrics( crap = 1 )
 	 * @return string[]
 	 */
 	public static function get_shortcodes() {
@@ -48,6 +47,8 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 	/**
 	 * Replace "[user_form id=n]" shortcode with a user form.
 	 *
+	 *
+	 * @Metrics( crap = 6.07 )
 	 * @param array           $args      Arguments passed to the parser
 	 * @param string          $content   Raw shortcode
 	 * @param ShortcodeParser $parser    Parser
@@ -90,6 +91,7 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 
 	/**
 	 *
+	 * @Metrics( crap = 5 )
 	 */
 	protected static function loadUserFormsRequirements() {
 		if ( self::config()->get( 'block_default_userforms_requirements' ) ) {
@@ -123,6 +125,7 @@ class UserFormShortcodeProvider implements ShortcodeHandler
 
 	/**
 	 *
+	 * @Metrics( crap = 4.01 )
 	 */
 	protected static function addUserFormsValidatei18n() {
 		$module = ModuleLoader::getModule( 'silverstripe/userforms' );

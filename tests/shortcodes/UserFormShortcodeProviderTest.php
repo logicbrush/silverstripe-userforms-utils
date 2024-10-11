@@ -1,9 +1,4 @@
 <?php
-/**
- * tests/shortcodes/UserFormShortcodeProviderTest.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\Tests\Shortcodes;

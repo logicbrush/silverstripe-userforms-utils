@@ -1,9 +1,4 @@
 <?php
-/**
- * src/FormFields/EditableHTML5DateField.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\FormFields;
@@ -15,8 +10,9 @@ use SilverStripe\UserForms\Model\EditableFormField;
 /**
  * An HTML5 date field.
  *
- * @package userform-utils
  */
+
+
 class EditableHTML5DateField extends EditableFormField {
 
 	private static $singular_name = 'HTML5 Date Field';
@@ -25,6 +21,7 @@ class EditableHTML5DateField extends EditableFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @return unknown
 	 */
 	public function getFormField() {

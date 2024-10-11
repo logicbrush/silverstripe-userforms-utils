@@ -1,9 +1,4 @@
 <?php
-/**
- * src/FormFields/Submission/ImageSubmittedFormField.php
- *
- * @package default
- */
 
 
 namespace Logicbrush\UserFormsUtils\FormFields\Submission;
@@ -15,8 +10,11 @@ class ImageSubmittedFormField extends SubmittedFormField {
 
 	/**
 	 *
+	 * @Metrics( crap = 6, uncovered = true )
 	 * @return unknown
 	 */
+
+
 	public function getFormattedValue() {
 		if ( $this->Value ) {
 			return DBField::create_field( 'HTMLText', sprintf(

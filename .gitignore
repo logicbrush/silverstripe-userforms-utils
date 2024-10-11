@@ -1,8 +1,11 @@
-resources
-composer.lock
-vendor
-*~
-coverage.xml
-public/assets
+.phptidy-cache
 .phpunit.result.cache
+*.log
+*~
 app
+composer.lock
+coverage.xml
+DOCKER_ENV
+docker_tag
+resources
+vendor
